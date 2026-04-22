@@ -117,7 +117,7 @@
 				<div class="ico"><Cpu size={18} /></div>
 				<h3>Runs locally</h3>
 				<p>
-					whisper.cpp lives on your machine. Your audio never leaves the box —
+					All processing happens on your machine. Your audio never leaves the box —
 					no API keys, no cloud latency, no subscription.
 				</p>
 			</div>
@@ -125,8 +125,8 @@
 				<div class="ico"><Mic size={18} /></div>
 				<h3>Mic or desktop audio</h3>
 				<p>
-					Point it at any input device. Caption your own voice, game audio, a
-					VoD you're reacting to — whatever's on the wire.
+					Select any audio device. Caption your own voice, game audio, a
+					VoD you're reacting to - even virtual audio cables.
 				</p>
 			</div>
 			<div class="feat">
@@ -139,10 +139,10 @@
 			</div>
 			<div class="feat">
 				<div class="ico"><SlidersHorizontal size={18} /></div>
-				<h3>Tunable Whisper</h3>
+				<h3>Advanced Settings</h3>
 				<p>
-					Swap models, toggle translate / token-timestamps / blank-suppression.
-					The UI exposes the flags, not a marketing abstraction.
+					Swap models, toggle translate, trim silence, etc.
+					Great out of the box, but allows you to customize your experience.
 				</p>
 			</div>
 		</div>
@@ -155,7 +155,7 @@
 			<h2>Four steps from install to on-stream.</h2>
 			<p>
 				Scrybe is a Tauri app — install it like any native binary. First-run
-				grabs a Whisper model, then it serves the overlay on localhost for OBS
+				grabs your selected model, then it serves the overlay on localhost for OBS
 				to pick up.
 			</p>
 		</div>
@@ -167,7 +167,7 @@
 			</li>
 			<li class="step">
 				<span class="step-n">2</span>
-				<span class="step-label">Pick an input and a Whisper model</span>
+				<span class="step-label">Pick an input and a model</span>
 				<span class="step-tag">large-v3-turbo</span>
 			</li>
 			<li class="step">
@@ -202,11 +202,11 @@
 				</div>
 				<div class="wstat">
 					<div class="wstat-val">CPU + GPU</div>
-					<div class="wstat-lbl">Metal, CUDA, Vulkan</div>
+					<div class="wstat-lbl">Metal (Apple), CUDA (Nvidia), Vulkan (cross-platform)</div>
 				</div>
 				<div class="wstat">
-					<div class="wstat-val">0 ¢</div>
-					<div class="wstat-lbl">no API bill, ever</div>
+					<div class="wstat-val">$0</div>
+					<div class="wstat-lbl">no API bills, no account creation</div>
 				</div>
 			</div>
 		</div>
