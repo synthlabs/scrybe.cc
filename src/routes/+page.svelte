@@ -99,7 +99,7 @@
 
 		<div class="hero-visual-wrap">
 			<div class="hero-visual">
-				<img src="/scrybe-demo.png" alt="Scrybe overlay editor" />
+				<img src="/scrybe_Oq0GQVQ2NT.png" alt="Scrybe overlay editor" />
 			</div>
 			<div class="caption-float">
 				and this is what it looks like on stream<span class="cursor"></span>
