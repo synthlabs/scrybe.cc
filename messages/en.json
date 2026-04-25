@@ -1,0 +1,67 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+
+	"meta_title": "Scrybe — Local subtitles for your own broadcasts",
+	"meta_description": "Scrybe runs whisper.cpp on your machine and pipes live captions straight into OBS as a browser source. Local, open-source, no cloud.",
+
+	"nav_features": "Features",
+	"nav_setup": "Setup",
+	"nav_github": "GitHub",
+
+	"hero_status": "early development",
+	"hero_headline_part1": "Local subtitles for",
+	"hero_headline_part2": "your own",
+	"hero_headline_grad": "broadcasts",
+	"hero_subtitle": "Scrybe runs whisper.cpp on your machine and pipes live captions straight into OBS as a browser source. No cloud, no API keys, no per-minute billing.",
+	"hero_subtitle_caution": "Still in early development — use with caution.",
+	"hero_meta_all_releases": "All releases",
+	"hero_caption_float": "and this is what it looks like on stream",
+
+	"features_section_label": "What it does",
+	"feat_local_title": "Runs locally",
+	"feat_local_body": "All processing happens on your machine. Your audio never leaves the box — no API keys, no cloud latency, no subscription.",
+	"feat_audio_title": "Mic or desktop audio",
+	"feat_audio_body": "Select any audio device. Caption your own voice, game audio, a VoD you're reacting to — even virtual audio cables.",
+	"feat_obs_title": "OBS browser source",
+	"feat_obs_body_pre": "Drop",
+	"feat_obs_body_post": "into OBS and the subtitles appear. Tune align, background and transparency live.",
+	"feat_settings_title": "Advanced Settings",
+	"feat_settings_body": "Swap models, toggle translate, trim silence, etc. Great out of the box, but allows you to customize your experience.",
+
+	"how_section_label": "Setup",
+	"how_heading": "Four steps from install to on-stream.",
+	"how_body": "Scrybe is a Tauri app — install it like any native binary. First-run grabs your selected model, then it serves the overlay on localhost for OBS to pick up.",
+	"how_step_1": "Install and launch Scrybe",
+	"how_step_2": "Pick an input and a model",
+	"how_step_3_pre": "Add",
+	"how_step_3_post": "to OBS",
+	"how_step_4_pre": "Press",
+	"how_step_4_post": ". Speak. Captions appear.",
+	"how_step_4_tag": "go live",
+
+	"whisper_tag": "under the hood",
+	"whisper_heading_prefix": "Powered by",
+	"whisper_stat_runtime_label": "no runtime, no Python",
+	"whisper_stat_compute_label": "Metal (Apple), CUDA (Nvidia), Vulkan (cross-platform)",
+	"whisper_stat_cost_label": "no API bills, no account creation",
+	"whisper_body_p1_pre": "whisper.cpp is Georgi Gerganov's port of OpenAI's Whisper speech-recognition model to plain C/C++. Same models, same weights — just stripped of the Python stack and compiled down to something small enough to ship inside a desktop app.",
+	"whisper_body_p2_pre": "Scrybe embeds it directly. Audio goes in, text comes out, nothing round-trips to a server. You pick the model size —",
+	"whisper_body_p2_mid": "for a low-end laptop,",
+	"whisper_body_p2_post": "when you want real accuracy — and tune the flags yourself.",
+	"whisper_link_prefix": "More at",
+
+	"foot_built_by": "Built by",
+	"foot_open_source_prefix": "Open source —",
+	"foot_repository": "repository",
+	"foot_issues": "Issues",
+	"foot_releases": "Releases",
+
+	"download_for": "Download for",
+	"platform_mac": "macOS",
+	"platform_win": "Windows",
+	"platform_linux_deb": "Linux · Debian/Ubuntu",
+	"platform_linux_rpm": "Linux · Fedora/RHEL",
+
+	"locale_label_en": "English",
+	"locale_label_ru": "Русский"
+}

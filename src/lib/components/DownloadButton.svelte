@@ -2,15 +2,16 @@
 	import { onMount } from 'svelte';
 	import { Apple, ChevronDown, Terminal, HardDrive } from '@lucide/svelte';
 	import type { PlatformKey } from '$lib/releases';
+	import { m as msgs } from '$lib/paraglide/messages';
 
 	type IconName = 'apple' | 'windows' | 'terminal' | 'harddrive';
-	type Meta = { label: string; icon: IconName };
+	type Meta = { label: () => string; icon: IconName };
 
 	const META: Record<PlatformKey, Meta> = {
-		mac: { label: 'macOS', icon: 'apple' },
-		win: { label: 'Windows', icon: 'windows' },
-		'linux-deb': { label: 'Linux · Debian/Ubuntu', icon: 'terminal' },
-		'linux-rpm': { label: 'Linux · Fedora/RHEL', icon: 'harddrive' }
+		mac: { label: msgs.platform_mac, icon: 'apple' },
+		win: { label: msgs.platform_win, icon: 'windows' },
+		'linux-deb': { label: msgs.platform_linux_deb, icon: 'terminal' },
+		'linux-rpm': { label: msgs.platform_linux_rpm, icon: 'harddrive' }
 	};
 
 	const ORDER: PlatformKey[] = ['mac', 'win', 'linux-deb', 'linux-rpm'];
@@ -27,7 +28,7 @@
 	let menuOpen = $state(false);
 	let root: HTMLDivElement;
 
-	const currentLabel = $derived(META[selected].label);
+	const currentLabel = $derived(META[selected].label());
 	const currentIcon = $derived(META[selected].icon);
 	const currentHref = $derived(assets[selected]);
 
@@ -87,7 +88,7 @@
 			<HardDrive class="plat-icon" size={18} />
 		{/if}
 		<span class="labels">
-			<span class="label-small">Download for</span>
+			<span class="label-small">{msgs.download_for()}</span>
 			<span class="label-main">{currentLabel}</span>
 		</span>
 	</a>
@@ -132,7 +133,7 @@
 					<HardDrive size={18} />
 				{/if}
 				<span class="mi-text">
-					<span class="mi-label">{m.label}</span>
+					<span class="mi-label">{m.label()}</span>
 					<span class="mi-sub">{filenames[key]}</span>
 				</span>
 			</a>

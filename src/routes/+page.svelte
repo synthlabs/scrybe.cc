@@ -2,7 +2,9 @@
 	import { onMount } from 'svelte';
 	import { Cpu, Mic, Projector, SlidersHorizontal } from '@lucide/svelte';
 	import DownloadButton from '$lib/components/DownloadButton.svelte';
+	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 	import { fetchLatestRelease } from '$lib/releases';
+	import { m as msgs } from '$lib/paraglide/messages';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -30,6 +32,14 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{msgs.meta_title()}</title>
+	<meta name="description" content={msgs.meta_description()} />
+	<link rel="alternate" hreflang="en" href="https://scrybe.cc/" />
+	<link rel="alternate" hreflang="ru" href="https://scrybe.cc/ru" />
+	<link rel="alternate" hreflang="x-default" href="https://scrybe.cc/" />
+</svelte:head>
+
 <div class="page">
 	<!-- NAV -->
 	<nav class="nav">
@@ -38,8 +48,8 @@
 			<span>scrybe</span>
 		</a>
 		<div class="nav-links">
-			<a href="#features">Features</a>
-			<a href="#how">Setup</a>
+			<a href="#features">{msgs.nav_features()}</a>
+			<a href="#how">{msgs.nav_setup()}</a>
 			<a href="#whisper">whisper.cpp</a>
 			<a
 				href="https://github.com/synthlabs/scrybe"
@@ -58,8 +68,9 @@
 						d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 3 .1 3.3.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"
 					/>
 				</svg>
-				<span>GitHub</span>
+				<span>{msgs.nav_github()}</span>
 			</a>
+			<LanguageSwitcher />
 		</div>
 	</nav>
 
@@ -68,18 +79,16 @@
 		<div>
 			<span class="eyebrow">
 				<span class="dot"></span>
-				<span>v{shortVersion} · early development</span>
+				<span>v{shortVersion} · {msgs.hero_status()}</span>
 			</span>
 
 			<h1 class="headline">
-				Local subtitles for<br />
-				your own <span class="grad">broadcasts</span>.
+				{msgs.hero_headline_part1()}<br />
+				{msgs.hero_headline_part2()} <span class="grad">{msgs.hero_headline_grad()}</span>.
 			</h1>
 
 			<p class="sub">
-				Scrybe runs whisper.cpp on your machine and pipes live captions straight
-				into OBS as a browser source. No cloud, no API keys, no per-minute
-				billing. <em>Still in early development — use with caution.</em>
+				{msgs.hero_subtitle()} <em>{msgs.hero_subtitle_caution()}</em>
 			</p>
 
 			<DownloadButton {assets} {filenames} />
@@ -92,7 +101,7 @@
 				<a
 					href="https://github.com/synthlabs/scrybe/releases"
 					target="_blank"
-					rel="noopener">All releases</a
+					rel="noopener">{msgs.hero_meta_all_releases()}</a
 				>
 			</div>
 		</div>
@@ -102,7 +111,7 @@
 				<img src="/scrybe_Oq0GQVQ2NT.png" alt="Scrybe overlay editor" />
 			</div>
 			<div class="caption-float">
-				and this is what it looks like on stream<span class="cursor"></span>
+				{msgs.hero_caption_float()}<span class="cursor"></span>
 			</div>
 		</div>
 	</section>
@@ -110,40 +119,30 @@
 	<!-- FEATURES -->
 	<section id="features">
 		<div class="section-label">
-			<span>What it does</span>
+			<span>{msgs.features_section_label()}</span>
 		</div>
 		<div class="features">
 			<div class="feat">
 				<div class="ico"><Cpu size={18} /></div>
-				<h3>Runs locally</h3>
-				<p>
-					All processing happens on your machine. Your audio never leaves the box —
-					no API keys, no cloud latency, no subscription.
-				</p>
+				<h3>{msgs.feat_local_title()}</h3>
+				<p>{msgs.feat_local_body()}</p>
 			</div>
 			<div class="feat">
 				<div class="ico"><Mic size={18} /></div>
-				<h3>Mic or desktop audio</h3>
-				<p>
-					Select any audio device. Caption your own voice, game audio, a
-					VoD you're reacting to - even virtual audio cables.
-				</p>
+				<h3>{msgs.feat_audio_title()}</h3>
+				<p>{msgs.feat_audio_body()}</p>
 			</div>
 			<div class="feat">
 				<div class="ico"><Projector size={18} /></div>
-				<h3>OBS browser source</h3>
+				<h3>{msgs.feat_obs_title()}</h3>
 				<p>
-					Drop <span class="inline-code">localhost:3030</span> into OBS and the
-					subtitles appear. Tune align, background and transparency live.
+					{msgs.feat_obs_body_pre()} <span class="inline-code">localhost:3030</span> {msgs.feat_obs_body_post()}
 				</p>
 			</div>
 			<div class="feat">
 				<div class="ico"><SlidersHorizontal size={18} /></div>
-				<h3>Advanced Settings</h3>
-				<p>
-					Swap models, toggle translate, trim silence, etc.
-					Great out of the box, but allows you to customize your experience.
-				</p>
+				<h3>{msgs.feat_settings_title()}</h3>
+				<p>{msgs.feat_settings_body()}</p>
 			</div>
 		</div>
 	</section>
@@ -151,38 +150,34 @@
 	<!-- HOW IT WORKS -->
 	<section id="how" class="how">
 		<div class="how-copy">
-			<div class="section-label section-label-tight"><span>Setup</span></div>
-			<h2>Four steps from install to on-stream.</h2>
-			<p>
-				Scrybe is a Tauri app — install it like any native binary. First-run
-				grabs your selected model, then it serves the overlay on localhost for OBS
-				to pick up.
-			</p>
+			<div class="section-label section-label-tight"><span>{msgs.how_section_label()}</span></div>
+			<h2>{msgs.how_heading()}</h2>
+			<p>{msgs.how_body()}</p>
 		</div>
 		<ol class="how-steps">
 			<li class="step">
 				<span class="step-n">1</span>
-				<span class="step-label">Install and launch Scrybe</span>
+				<span class="step-label">{msgs.how_step_1()}</span>
 				<span class="step-tag"></span>
 			</li>
 			<li class="step">
 				<span class="step-n">2</span>
-				<span class="step-label">Pick an input and a model</span>
+				<span class="step-label">{msgs.how_step_2()}</span>
 				<span class="step-tag">large-v3-turbo</span>
 			</li>
 			<li class="step">
 				<span class="step-n">3</span>
 				<span class="step-label"
-					>Add <code>http://localhost:3030/app/v1/overlay</code> to OBS</span
+					>{msgs.how_step_3_pre()} <code>http://localhost:3030/app/v1/overlay</code> {msgs.how_step_3_post()}</span
 				>
 				<span class="step-tag">960 × 240</span>
 			</li>
 			<li class="step">
 				<span class="step-n">4</span>
 				<span class="step-label"
-					>Press <code>Start</code>. Speak. Captions appear.</span
+					>{msgs.how_step_4_pre()} <code>Start</code>{msgs.how_step_4_post()}</span
 				>
-				<span class="step-tag">go live</span>
+				<span class="step-tag">{msgs.how_step_4_tag()}</span>
 			</li>
 		</ol>
 	</section>
@@ -192,40 +187,33 @@
 		<div class="whisper-head">
 			<span class="whisper-tag">
 				<span class="dot"></span>
-				<span>under the hood</span>
+				<span>{msgs.whisper_tag()}</span>
 			</span>
-			<h2>Powered by <span class="mono">whisper.cpp</span>.</h2>
+			<h2>{msgs.whisper_heading_prefix()} <span class="mono">whisper.cpp</span>.</h2>
 			<div class="whisper-stats">
 				<div class="wstat">
 					<div class="wstat-val">C/C++</div>
-					<div class="wstat-lbl">no runtime, no Python</div>
+					<div class="wstat-lbl">{msgs.whisper_stat_runtime_label()}</div>
 				</div>
 				<div class="wstat">
 					<div class="wstat-val">CPU + GPU</div>
-					<div class="wstat-lbl">Metal (Apple), CUDA (Nvidia), Vulkan (cross-platform)</div>
+					<div class="wstat-lbl">{msgs.whisper_stat_compute_label()}</div>
 				</div>
 				<div class="wstat">
 					<div class="wstat-val">$0</div>
-					<div class="wstat-lbl">no API bills, no account creation</div>
+					<div class="wstat-lbl">{msgs.whisper_stat_cost_label()}</div>
 				</div>
 			</div>
 		</div>
 		<div class="whisper-body">
+			<p>{msgs.whisper_body_p1_pre()}</p>
 			<p>
-				<strong>whisper.cpp</strong> is Georgi Gerganov's port of OpenAI's
-				Whisper speech-recognition model to plain C/C++. Same models, same
-				weights — just stripped of the Python stack and compiled down to
-				something small enough to ship inside a desktop app.
-			</p>
-			<p>
-				Scrybe embeds it directly. Audio goes in, text comes out, nothing
-				round-trips to a server. You pick the model size —
-				<span class="inline-code">tiny</span> for a low-end laptop,
-				<span class="inline-code">large-v3-turbo</span> when you want real
-				accuracy — and tune the flags yourself.
+				{msgs.whisper_body_p2_pre()}
+				<span class="inline-code">tiny</span> {msgs.whisper_body_p2_mid()}
+				<span class="inline-code">large-v3-turbo</span> {msgs.whisper_body_p2_post()}
 			</p>
 			<p class="whisper-link">
-				More at <a
+				{msgs.whisper_link_prefix()} <a
 					href="https://github.com/ggml-org/whisper.cpp"
 					target="_blank"
 					rel="noopener">github.com/ggml-org/whisper.cpp</a
@@ -237,26 +225,26 @@
 	<!-- FOOTER -->
 	<footer class="foot">
 		<div>
-			Built by
+			{msgs.foot_built_by()}
 			<a
 				href="https://github.com/synthlabs"
 				target="_blank"
 				rel="noopener"
 				class="foot-inline">synthlabs</a
-			>. Open source —
+			>. {msgs.foot_open_source_prefix()}
 			<a
 				href="https://github.com/synthlabs/scrybe"
 				target="_blank"
 				rel="noopener"
-				class="foot-inline">repository</a
+				class="foot-inline">{msgs.foot_repository()}</a
 			>.
 		</div>
 		<div class="foot-links">
 			<a href="https://github.com/synthlabs/scrybe/issues" target="_blank" rel="noopener"
-				>Issues</a
+				>{msgs.foot_issues()}</a
 			>
 			<a href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener"
-				>Releases</a
+				>{msgs.foot_releases()}</a
 			>
 			<a href="https://github.com/synthlabs/pepo" target="_blank" rel="noopener">Pepo</a>
 		</div>

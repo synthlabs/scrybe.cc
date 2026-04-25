@@ -1,0 +1,67 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+
+	"meta_title": "Scrybe — Локальные субтитры для ваших трансляций",
+	"meta_description": "Scrybe запускает whisper.cpp на вашем компьютере и передаёт живые субтитры прямо в OBS как браузерный источник. Локально, открытый исходный код, без облака.",
+
+	"nav_features": "Возможности",
+	"nav_setup": "Установка",
+	"nav_github": "GitHub",
+
+	"hero_status": "ранняя разработка",
+	"hero_headline_part1": "Локальные субтитры для",
+	"hero_headline_part2": "ваших",
+	"hero_headline_grad": "трансляций",
+	"hero_subtitle": "Scrybe запускает whisper.cpp на вашем компьютере и передаёт живые субтитры прямо в OBS как браузерный источник. Без облака, без API-ключей, без поминутной оплаты.",
+	"hero_subtitle_caution": "Всё ещё в ранней разработке — используйте с осторожностью.",
+	"hero_meta_all_releases": "Все релизы",
+	"hero_caption_float": "а вот как это выглядит на стриме",
+
+	"features_section_label": "Что он делает",
+	"feat_local_title": "Работает локально",
+	"feat_local_body": "Вся обработка происходит на вашем компьютере. Звук никогда не покидает машину — никаких API-ключей, задержек облака или подписок.",
+	"feat_audio_title": "Микрофон или системный звук",
+	"feat_audio_body": "Выберите любое аудиоустройство. Делайте субтитры для своего голоса, звука игры, реакции на VoD — даже для виртуальных аудиокабелей.",
+	"feat_obs_title": "Браузерный источник для OBS",
+	"feat_obs_body_pre": "Добавьте",
+	"feat_obs_body_post": "в OBS — и субтитры появятся. Настраивайте выравнивание, фон и прозрачность вживую.",
+	"feat_settings_title": "Расширенные настройки",
+	"feat_settings_body": "Меняйте модели, включайте перевод, обрезайте тишину и многое другое. Отлично работает «из коробки», но позволяет настроить всё под себя.",
+
+	"how_section_label": "Установка",
+	"how_heading": "Четыре шага от установки до эфира.",
+	"how_body": "Scrybe — это приложение на Tauri, устанавливайте его как любую нативную программу. При первом запуске загружается выбранная модель, затем оверлей раздаётся на localhost для подхвата OBS.",
+	"how_step_1": "Установите и запустите Scrybe",
+	"how_step_2": "Выберите вход и модель",
+	"how_step_3_pre": "Добавьте",
+	"how_step_3_post": "в OBS",
+	"how_step_4_pre": "Нажмите",
+	"how_step_4_post": ". Говорите. Появляются субтитры.",
+	"how_step_4_tag": "в эфир",
+
+	"whisper_tag": "под капотом",
+	"whisper_heading_prefix": "Работает на",
+	"whisper_stat_runtime_label": "без рантайма, без Python",
+	"whisper_stat_compute_label": "Metal (Apple), CUDA (Nvidia), Vulkan (кросс-платформенный)",
+	"whisper_stat_cost_label": "без счетов за API, без регистрации",
+	"whisper_body_p1_pre": "whisper.cpp — это порт модели распознавания речи Whisper от OpenAI на чистый C/C++ авторства Георгия Герганова. Те же модели, те же веса — просто без Python-стека, скомпилированные до размера, помещающегося внутрь десктоп-приложения.",
+	"whisper_body_p2_pre": "Scrybe встраивает его напрямую. Звук на входе, текст на выходе, ничего не уходит на сервер. Вы выбираете размер модели —",
+	"whisper_body_p2_mid": "для слабого ноутбука или",
+	"whisper_body_p2_post": "когда нужна реальная точность — и сами настраиваете флаги.",
+	"whisper_link_prefix": "Подробнее на",
+
+	"foot_built_by": "Сделано",
+	"foot_open_source_prefix": "Открытый исходный код —",
+	"foot_repository": "репозиторий",
+	"foot_issues": "Задачи",
+	"foot_releases": "Релизы",
+
+	"download_for": "Скачать для",
+	"platform_mac": "macOS",
+	"platform_win": "Windows",
+	"platform_linux_deb": "Linux · Debian/Ubuntu",
+	"platform_linux_rpm": "Linux · Fedora/RHEL",
+
+	"locale_label_en": "English",
+	"locale_label_ru": "Русский"
+}
