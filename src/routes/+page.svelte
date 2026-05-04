@@ -255,7 +255,7 @@
 	.page {
 		max-width: 1120px;
 		margin: 0 auto;
-		padding: 20px 32px 96px;
+		padding: 18px clamp(18px, 5vw, 32px) 72px;
 	}
 
 	/* ---------- HEADER ---------- */
@@ -264,7 +264,8 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 8px 0 0;
-		height: 56px;
+		min-height: 56px;
+		gap: 18px;
 	}
 	.brand {
 		display: flex;
@@ -285,6 +286,7 @@
 		gap: 28px;
 		font-size: 14px;
 		color: var(--c-fg-muted);
+		min-width: 0;
 	}
 	.nav-links a:hover {
 		color: var(--c-fg);
@@ -297,10 +299,10 @@
 
 	/* ---------- HERO ---------- */
 	.hero {
-		padding: 48px 0 72px;
+		padding: 42px 0 56px;
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 40px;
+		gap: 34px;
 		align-items: center;
 	}
 	@media (min-width: 880px) {
@@ -320,7 +322,7 @@
 		padding: 6px 10px;
 		border: 1px solid var(--c-border);
 		border-radius: var(--radius-full);
-		margin-bottom: 24px;
+		margin-bottom: 22px;
 	}
 	.eyebrow .dot {
 		width: 6px;
@@ -331,7 +333,7 @@
 	}
 
 	h1.headline {
-		font-size: clamp(36px, 5.4vw, 56px);
+		font-size: clamp(38px, 11vw, 56px);
 		line-height: 1.05;
 		letter-spacing: -0.025em;
 		font-weight: 600;
@@ -346,7 +348,7 @@
 	}
 
 	.sub {
-		font-size: 17px;
+		font-size: clamp(16px, 4.3vw, 17px);
 		line-height: 1.55;
 		color: hsl(240 5% 78%);
 		max-width: 44ch;
@@ -385,7 +387,7 @@
 	}
 	.hero-visual {
 		position: relative;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 4 / 3;
 		border-radius: var(--radius-xl);
 		background: hsl(221 40% 8%);
 		border: 1px solid var(--c-border);
@@ -420,18 +422,17 @@
 	}
 
 	.caption-float {
-		position: absolute;
-		bottom: -22px;
-		left: 50%;
-		transform: translateX(-50%);
-		padding: 12px 20px;
+		margin: 12px auto 0;
+		padding: 10px 14px;
+		width: min(100%, 340px);
 		background: rgba(0, 0, 0, 0.72);
 		border-radius: var(--radius-xl);
-		font-size: 15px;
+		font-size: 13px;
 		font-weight: 500;
 		color: white;
 		letter-spacing: 0.01em;
-		white-space: nowrap;
+		line-height: 1.35;
+		text-align: center;
 		backdrop-filter: blur(8px);
 		border: 1px solid hsl(0 0% 100% / 0.06);
 		box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.8);
@@ -479,7 +480,7 @@
 	}
 
 	.features {
-		margin-top: 40px;
+		margin-top: 28px;
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 1px;
@@ -544,8 +545,8 @@
 
 	/* ---------- WHISPER EXPLAINER ---------- */
 	.whisper {
-		margin-top: 88px;
-		padding: 36px 32px;
+		margin-top: 64px;
+		padding: 28px 22px;
 		border: 1px solid var(--c-border);
 		border-radius: var(--radius-xl);
 		background:
@@ -634,7 +635,7 @@
 	}
 	.whisper-stats {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: 1fr;
 		gap: 12px;
 		margin-top: 8px;
 	}
@@ -661,7 +662,7 @@
 
 	/* ---------- HOW IT WORKS ---------- */
 	.how {
-		margin-top: 88px;
+		margin-top: 64px;
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 28px;
@@ -702,9 +703,9 @@
 	}
 	.step {
 		display: grid;
-		grid-template-columns: 32px 1fr auto;
+		grid-template-columns: 28px minmax(0, 1fr);
 		align-items: center;
-		gap: 16px;
+		gap: 12px;
 		padding: 14px 18px;
 		border-bottom: 1px solid var(--c-border);
 		font-size: 14px;
@@ -726,6 +727,7 @@
 	}
 	.step-label {
 		color: var(--c-fg);
+		min-width: 0;
 	}
 	.step-label code {
 		font-family: var(--font-mono);
@@ -739,11 +741,13 @@
 		font-size: 11px;
 		color: var(--c-fg-muted);
 		font-family: var(--font-mono);
+		grid-column: 2;
+		overflow-wrap: anywhere;
 	}
 
 	/* ---------- FOOTER ---------- */
 	.foot {
-		margin-top: 96px;
+		margin-top: 72px;
 		padding-top: 28px;
 		border-top: 1px solid var(--c-border);
 		display: flex;
@@ -764,5 +768,97 @@
 	}
 	.foot-links a:hover {
 		color: var(--c-fg);
+	}
+
+	@media (max-width: 719px) {
+		.nav {
+			align-items: flex-start;
+			flex-direction: column;
+			padding-top: 0;
+		}
+		.brand img {
+			width: 44px;
+			height: 44px;
+		}
+		.nav-links {
+			width: 100%;
+			gap: 18px;
+			overflow-x: auto;
+			padding-bottom: 6px;
+			scrollbar-width: none;
+		}
+		.nav-links::-webkit-scrollbar {
+			display: none;
+		}
+		.nav-links a,
+		.nav-links :global(.ls) {
+			flex: 0 0 auto;
+		}
+		.nav-links .gh span {
+			display: none;
+		}
+		.eyebrow {
+			max-width: 100%;
+			white-space: normal;
+		}
+		.dl-meta {
+			gap: 8px 10px;
+		}
+		.section-label {
+			margin-bottom: 22px;
+		}
+		.feat {
+			min-height: 0;
+			padding: 24px 20px 26px;
+		}
+		.whisper h2,
+		.how-copy h2 {
+			font-size: 24px;
+		}
+		.step {
+			padding: 14px 14px;
+		}
+		.step-label code {
+			overflow-wrap: anywhere;
+			word-break: break-word;
+		}
+		.foot {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+		.foot-links {
+			flex-wrap: wrap;
+			gap: 12px 18px;
+		}
+	}
+
+	@media (min-width: 720px) {
+		.page {
+			padding-bottom: 96px;
+		}
+		.hero-visual {
+			aspect-ratio: 16 / 10;
+		}
+		.caption-float {
+			position: absolute;
+			bottom: -22px;
+			left: 50%;
+			transform: translateX(-50%);
+			margin: 0;
+			padding: 12px 20px;
+			width: auto;
+			font-size: 15px;
+			white-space: nowrap;
+		}
+		.whisper-stats {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.step {
+			grid-template-columns: 32px 1fr auto;
+			gap: 16px;
+		}
+		.step-tag {
+			grid-column: auto;
+		}
 	}
 </style>

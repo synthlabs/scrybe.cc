@@ -149,6 +149,7 @@
 		box-shadow: var(--shadow-md);
 		overflow: visible;
 		position: relative;
+		max-width: 100%;
 	}
 	.dl-primary {
 		display: inline-flex;
@@ -166,6 +167,7 @@
 		cursor: pointer;
 		transition: background-color 180ms ease-out;
 		font-family: inherit;
+		min-width: 0;
 	}
 	.dl-primary:hover {
 		background: hsl(17 78% 60%);
@@ -190,6 +192,7 @@
 	}
 	.labels {
 		text-align: left;
+		min-width: 0;
 	}
 
 	.dl-split {
@@ -215,7 +218,8 @@
 		position: absolute;
 		top: calc(100% + 8px);
 		right: 0;
-		min-width: 260px;
+		width: min(320px, calc(100vw - 36px));
+		min-width: min(260px, calc(100vw - 36px));
 		background: hsl(var(--popover));
 		border: 1px solid var(--c-border);
 		border-radius: var(--radius-lg);
@@ -266,9 +270,30 @@
 		margin-top: 2px;
 		font-family: var(--font-mono);
 		display: block;
+		overflow-wrap: anywhere;
 	}
 	.mi-text {
 		display: flex;
 		flex-direction: column;
+		min-width: 0;
+	}
+
+	@media (max-width: 480px) {
+		.dl {
+			display: flex;
+			width: 100%;
+		}
+		.dl-primary {
+			flex: 1 1 auto;
+			justify-content: center;
+			padding: 0 16px;
+		}
+		.dl-split {
+			flex: 0 0 48px;
+			width: 48px;
+		}
+		.label-main {
+			font-size: 15px;
+		}
 	}
 </style>
