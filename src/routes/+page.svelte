@@ -76,19 +76,18 @@
 
 	<!-- HERO -->
 	<section class="hero">
-		<div>
+		<div class="hero-copy">
 			<span class="eyebrow">
 				<span class="dot"></span>
 				<span>v{shortVersion} · {msgs.hero_status()}</span>
 			</span>
 
 			<h1 class="headline">
-				{msgs.hero_headline_part1()}<br />
-				{msgs.hero_headline_part2()} <span class="grad">{msgs.hero_headline_grad()}</span>.
+				{msgs.hero_headline()}
 			</h1>
 
 			<p class="sub">
-				{msgs.hero_subtitle()} <em>{msgs.hero_subtitle_caution()}</em>
+				{msgs.hero_subtitle()} <span class="sub-caution">{msgs.hero_subtitle_caution()}</span>
 			</p>
 
 			<DownloadButton {assets} {filenames} />
@@ -108,7 +107,7 @@
 
 		<div class="hero-visual-wrap">
 			<div class="hero-visual">
-				<img src="/scrybe_Oq0GQVQ2NT.png" alt="Scrybe overlay editor" />
+				<img src="/scrybe_NNC63fbGrP.png" alt="Scrybe overlay editor" />
 			</div>
 			<div class="caption-float">
 				{msgs.hero_caption_float()}<span class="cursor"></span>
@@ -123,25 +122,33 @@
 		</div>
 		<div class="features">
 			<div class="feat">
-				<div class="ico"><Cpu size={18} /></div>
-				<h3>{msgs.feat_local_title()}</h3>
+				<div class="feat-heading">
+					<div class="ico"><Cpu size={18} /></div>
+					<h3>{msgs.feat_local_title()}</h3>
+				</div>
 				<p>{msgs.feat_local_body()}</p>
 			</div>
 			<div class="feat">
-				<div class="ico"><Mic size={18} /></div>
-				<h3>{msgs.feat_audio_title()}</h3>
+				<div class="feat-heading">
+					<div class="ico"><Mic size={18} /></div>
+					<h3>{msgs.feat_audio_title()}</h3>
+				</div>
 				<p>{msgs.feat_audio_body()}</p>
 			</div>
 			<div class="feat">
-				<div class="ico"><Projector size={18} /></div>
-				<h3>{msgs.feat_obs_title()}</h3>
+				<div class="feat-heading">
+					<div class="ico"><Projector size={18} /></div>
+					<h3>{msgs.feat_obs_title()}</h3>
+				</div>
 				<p>
 					{msgs.feat_obs_body_pre()} <span class="inline-code">localhost:3030</span> {msgs.feat_obs_body_post()}
 				</p>
 			</div>
 			<div class="feat">
-				<div class="ico"><SlidersHorizontal size={18} /></div>
-				<h3>{msgs.feat_settings_title()}</h3>
+				<div class="feat-heading">
+					<div class="ico"><SlidersHorizontal size={18} /></div>
+					<h3>{msgs.feat_settings_title()}</h3>
+				</div>
 				<p>{msgs.feat_settings_body()}</p>
 			</div>
 		</div>
@@ -253,9 +260,14 @@
 
 <style>
 	.page {
-		max-width: 1120px;
+		--app-shell: hsl(220 13% 7%);
+		--app-panel: hsl(220 14% 9%);
+		--app-border: hsl(216 15% 17%);
+		--app-muted: hsl(207 28% 76%);
+		max-width: 1180px;
 		margin: 0 auto;
-		padding: 18px clamp(18px, 5vw, 32px) 72px;
+		padding: 16px clamp(18px, 5vw, 34px) 72px;
+		position: relative;
 	}
 
 	/* ---------- HEADER ---------- */
@@ -263,33 +275,46 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 8px 0 0;
-		min-height: 56px;
+		padding: 12px 0 14px;
+		min-height: 64px;
 		gap: 18px;
+		border-bottom: 1px solid var(--app-border);
 	}
 	.brand {
 		display: flex;
 		align-items: center;
 		gap: 10px;
 		font-weight: 600;
-		font-size: 15px;
-		letter-spacing: -0.01em;
+		font-size: 14px;
+		letter-spacing: 0;
+		text-transform: uppercase;
 	}
 	.brand img {
-		width: 50px;
-		height: 50px;
+		width: 42px;
+		height: 42px;
 		display: block;
 	}
 	.nav-links {
 		display: flex;
 		align-items: center;
-		gap: 28px;
-		font-size: 14px;
+		gap: 8px;
+		font-size: 13px;
 		color: var(--c-fg-muted);
 		min-width: 0;
 	}
+	.nav-links a {
+		padding: 7px 10px;
+		border: 1px solid transparent;
+		border-radius: var(--radius-md);
+		transition:
+			border-color 150ms ease-out,
+			color 150ms ease-out,
+			background-color 150ms ease-out;
+	}
 	.nav-links a:hover {
 		color: var(--c-fg);
+		background: var(--app-panel);
+		border-color: var(--app-border);
 	}
 	.nav-links .gh {
 		display: inline-flex;
@@ -299,65 +324,80 @@
 
 	/* ---------- HERO ---------- */
 	.hero {
-		padding: 42px 0 56px;
+		padding: 36px 0 56px;
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 34px;
+		gap: 28px;
 		align-items: center;
+		border-bottom: 1px solid var(--app-border);
 	}
 	@media (min-width: 880px) {
 		.hero {
-			grid-template-columns: 1.05fr 0.95fr;
-			gap: 64px;
-			padding: 64px 0 96px;
+			grid-template-columns: minmax(0, 0.9fr) minmax(430px, 1.1fr);
+			gap: 44px;
+			padding: 56px 0 82px;
 		}
+	}
+
+	.hero-copy {
+		position: relative;
+		padding-left: 18px;
+		border-left: 2px solid var(--c-scrybe-hex);
 	}
 
 	.eyebrow {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		font-size: 12px;
+		font-family: var(--font-mono);
+		font-size: 11px;
 		color: var(--c-fg-muted);
-		padding: 6px 10px;
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-full);
+		padding: 6px 9px;
+		border: 1px solid var(--app-border);
+		border-radius: var(--radius-md);
 		margin-bottom: 22px;
+		background: var(--app-panel);
+		text-transform: uppercase;
 	}
 	.eyebrow .dot {
 		width: 6px;
 		height: 6px;
-		border-radius: 50%;
+		border-radius: 1px;
 		background: var(--c-scrybe-hex);
-		box-shadow: 0 0 0 3px hsl(17 75% 65% / 0.18);
+		box-shadow: 0 0 0 3px hsl(17 75% 65% / 0.14);
 	}
 
 	h1.headline {
-		font-size: clamp(38px, 11vw, 56px);
-		line-height: 1.05;
-		letter-spacing: -0.025em;
+		font-size: 42px;
+		line-height: 1;
+		letter-spacing: 0;
 		font-weight: 600;
 		margin: 0 0 20px;
 		text-wrap: balance;
 	}
-	h1.headline .grad {
-		background: var(--c-scrybe-gradient);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
+	@media (min-width: 720px) {
+		h1.headline {
+			font-size: 64px;
+		}
+	}
+	h1.headline .accent-word {
+		color: var(--c-scrybe-hex);
+		text-decoration: underline;
+		text-decoration-thickness: 3px;
+		text-underline-offset: 8px;
 	}
 
 	.sub {
-		font-size: clamp(16px, 4.3vw, 17px);
+		font-size: 17px;
 		line-height: 1.55;
-		color: hsl(240 5% 78%);
+		color: var(--app-muted);
 		max-width: 44ch;
 		margin: 0 0 32px;
 		text-wrap: pretty;
 	}
-	.sub em {
-		font-style: normal;
+	.sub-caution {
 		color: var(--c-fg-muted);
+		font-size: 0.92em;
 	}
 
 	.dl-meta {
@@ -387,40 +427,25 @@
 	}
 	.hero-visual {
 		position: relative;
-		aspect-ratio: 4 / 3;
-		border-radius: var(--radius-xl);
-		background: hsl(221 40% 8%);
-		border: 1px solid var(--c-border);
+		border-radius: var(--radius-lg);
+		background: transparent;
+		border: 0;
 		overflow: hidden;
-		box-shadow:
-			0 30px 60px -20px rgb(0 0 0 / 0.6),
-			0 0 0 1px hsl(17 75% 65% / 0.06);
+		box-shadow: none;
 	}
 	.hero-visual img {
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: top left;
+		height: auto;
 		display: block;
 	}
 	.hero-visual::after {
 		content: '';
 		position: absolute;
-		inset: 0;
-		background:
-			radial-gradient(
-				120% 80% at 80% 0%,
-				hsl(17 75% 65% / 0.08),
-				transparent 60%
-			),
-			radial-gradient(
-				120% 80% at 0% 100%,
-				hsl(330 81% 65% / 0.06),
-				transparent 60%
-			);
+		inset: 0px;
+		border: 1px solid rgb(0 0 0 / 0.85);
+		border-radius: calc(var(--radius-lg) - 1px);
 		pointer-events: none;
 	}
-
 	.caption-float {
 		margin: 12px auto 0;
 		padding: 10px 14px;
@@ -430,7 +455,7 @@
 		font-size: 13px;
 		font-weight: 500;
 		color: white;
-		letter-spacing: 0.01em;
+		letter-spacing: 0;
 		line-height: 1.35;
 		text-align: center;
 		backdrop-filter: blur(8px);
@@ -463,10 +488,11 @@
 		display: flex;
 		align-items: center;
 		gap: 12px;
+		font-family: var(--font-mono);
 		font-size: 12px;
 		color: var(--c-fg-muted);
 		text-transform: uppercase;
-		letter-spacing: 0.14em;
+		letter-spacing: 0;
 		margin-bottom: 28px;
 	}
 	.section-label-tight {
@@ -476,7 +502,7 @@
 		content: '';
 		flex: 1;
 		height: 1px;
-		background: var(--c-border);
+		background: var(--app-border);
 	}
 
 	.features {
@@ -484,10 +510,11 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 1px;
-		background: var(--c-border);
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-xl);
+		background: var(--app-border);
+		border: 1px solid var(--app-border);
+		border-radius: var(--radius-lg);
 		overflow: hidden;
+		box-shadow: none;
 	}
 	@media (min-width: 720px) {
 		.features {
@@ -501,22 +528,32 @@
 	}
 
 	.feat {
-		background: hsl(221 50% 6.5%);
-		padding: 28px 24px 32px;
+		background: var(--app-panel);
+		padding: 26px 22px 30px;
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-		min-height: 200px;
+		min-height: 190px;
+		position: relative;
+	}
+	.feat::before {
+		content: none;
+	}
+	.feat-heading {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
 	}
 	.feat .ico {
 		width: 34px;
 		height: 34px;
 		border-radius: var(--radius-md);
-		background: hsl(17 75% 65% / 0.12);
+		background: var(--app-shell);
+		border: 1px solid var(--app-border);
 		color: hsl(17 75% 70%);
 		display: grid;
 		place-items: center;
-		margin-bottom: 6px;
+		flex: 0 0 auto;
 	}
 	.feat .ico :global(svg) {
 		width: 18px;
@@ -527,7 +564,7 @@
 		font-weight: 600;
 		margin: 0;
 		color: var(--c-fg);
-		letter-spacing: -0.005em;
+		letter-spacing: 0;
 	}
 	.feat p {
 		font-size: 13.5px;
@@ -546,20 +583,14 @@
 	/* ---------- WHISPER EXPLAINER ---------- */
 	.whisper {
 		margin-top: 64px;
-		padding: 28px 22px;
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-xl);
-		background:
-			linear-gradient(
-				135deg,
-				hsl(17 75% 65% / 0.04),
-				hsl(330 81% 65% / 0.03) 60%,
-				transparent
-			),
-			hsl(221 50% 6.5%);
+		padding: 26px 22px;
+		border: 1px solid var(--app-border);
+		border-radius: var(--radius-lg);
+		background: var(--app-panel);
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 28px;
+		box-shadow: none;
 	}
 	@media (min-width: 880px) {
 		.whisper {
@@ -581,23 +612,24 @@
 		align-self: flex-start;
 		font-family: var(--font-mono);
 		font-size: 11px;
-		letter-spacing: 0.04em;
+		letter-spacing: 0;
 		color: hsl(17 75% 72%);
 		padding: 4px 10px;
-		border: 1px solid hsl(17 75% 65% / 0.3);
-		border-radius: var(--radius-full);
-		background: hsl(17 75% 65% / 0.08);
+		border: 1px solid var(--app-border);
+		border-radius: var(--radius-md);
+		background: var(--app-shell);
+		text-transform: uppercase;
 	}
 	.whisper-tag .dot {
 		width: 5px;
 		height: 5px;
-		border-radius: 50%;
+		border-radius: 1px;
 		background: hsl(17 75% 70%);
 	}
 	.whisper h2 {
 		font-size: 24px;
 		font-weight: 600;
-		letter-spacing: -0.015em;
+		letter-spacing: 0;
 		margin: 0;
 		line-height: 1.2;
 	}
@@ -618,10 +650,6 @@
 		text-wrap: pretty;
 		max-width: 54ch;
 	}
-	.whisper-body p strong {
-		color: var(--c-fg);
-		font-weight: 500;
-	}
 	.whisper-body a {
 		text-decoration: underline;
 		text-underline-offset: 3px;
@@ -641,16 +669,16 @@
 	}
 	.wstat {
 		padding: 14px 14px;
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-lg);
-		background: hsl(221 60% 5%);
+		border: 1px solid var(--app-border);
+		border-radius: var(--radius-md);
+		background: var(--app-shell);
 	}
 	.wstat .wstat-val {
 		font-family: var(--font-mono);
 		font-size: 18px;
 		font-weight: 600;
 		color: var(--c-fg);
-		letter-spacing: -0.01em;
+		letter-spacing: 0;
 		line-height: 1.1;
 	}
 	.wstat .wstat-lbl {
@@ -662,7 +690,7 @@
 
 	/* ---------- HOW IT WORKS ---------- */
 	.how {
-		margin-top: 64px;
+		margin-top: 72px;
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 28px;
@@ -677,7 +705,7 @@
 	.how-copy h2 {
 		font-size: 28px;
 		font-weight: 600;
-		letter-spacing: -0.02em;
+		letter-spacing: 0;
 		margin: 0 0 14px;
 		line-height: 1.15;
 	}
@@ -693,13 +721,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0;
-		border: 1px solid var(--c-border);
+		border: 1px solid var(--app-border);
 		border-radius: var(--radius-lg);
 		overflow: hidden;
-		background: hsl(221 50% 6.5%);
+		background: var(--app-panel);
 		list-style: none;
 		padding: 0;
 		margin: 0;
+		box-shadow: none;
 	}
 	.step {
 		display: grid;
@@ -707,7 +736,7 @@
 		align-items: center;
 		gap: 12px;
 		padding: 14px 18px;
-		border-bottom: 1px solid var(--c-border);
+		border-bottom: 1px solid var(--app-border);
 		font-size: 14px;
 	}
 	.step:last-child {
@@ -716,9 +745,10 @@
 	.step-n {
 		width: 24px;
 		height: 24px;
-		border-radius: 50%;
-		background: hsl(var(--secondary));
-		color: var(--c-fg-muted);
+		border-radius: var(--radius-sm);
+		background: var(--app-shell);
+		border: 1px solid var(--app-border);
+		color: hsl(17 75% 72%);
 		font-size: 12px;
 		font-weight: 600;
 		display: grid;
@@ -733,7 +763,8 @@
 		font-family: var(--font-mono);
 		font-size: 12.5px;
 		padding: 2px 6px;
-		background: hsl(var(--secondary));
+		background: var(--app-shell);
+		border: 1px solid var(--app-border);
 		border-radius: 3px;
 		color: hsl(17 75% 72%);
 	}
@@ -749,7 +780,7 @@
 	.foot {
 		margin-top: 72px;
 		padding-top: 28px;
-		border-top: 1px solid var(--c-border);
+		border-top: 1px solid var(--app-border);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -835,9 +866,6 @@
 	@media (min-width: 720px) {
 		.page {
 			padding-bottom: 96px;
-		}
-		.hero-visual {
-			aspect-ratio: 16 / 10;
 		}
 		.caption-float {
 			position: absolute;

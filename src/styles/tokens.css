@@ -176,7 +176,6 @@
   --c-scrybe-hex:      hsl(var(--c-scrybe));
   --c-scrybe-soft:     hsl(17 75% 65% / 0.18);
   --c-scrybe-ring:     hsl(17 75% 75%);
-  --c-scrybe-gradient: linear-gradient(135deg, hsl(17 75% 65%), hsl(330 81% 65%));
 }
 
 /* ============================================================
