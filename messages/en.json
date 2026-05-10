@@ -5,6 +5,7 @@
 	"meta_description": "Scrybe runs local Speech-To-Text models on your machine to create live captions that you can add to OBS as a browser source. Free, Fully local, open-source, no cloud.",
 
 	"nav_features": "Features",
+	"nav_planned": "Roadmap",
 	"nav_setup": "Setup",
 	"nav_github": "GitHub",
 
@@ -25,6 +26,18 @@
 	"feat_obs_body_post": "into OBS and the subtitles appear. Adjust text alignment, color, font size, transparency, etc and the overlay will update automatically.",
 	"feat_settings_title": "Advanced Settings",
 	"feat_settings_body": "Swap models, toggle translate, trim silence, etc. Works great out of the box, but allows you to customize your experience.",
+
+	"planned_section_label": "Planned features",
+	"planned_heading": "What is coming next.",
+	"planned_body": "Scrybe is still early, and the roadmap is focused on making live captions more flexible, readable, and useful after the stream.",
+	"planned_audio_title": "Smarter audio capture",
+	"planned_audio_body": "Choose the exact audio source, whether that's a microphone, desktop audio, or audio from a specific process. Follow the system default when it changes, and keep transcription running when it switches.",
+	"planned_transcripts_title": "Cleaner live transcripts",
+	"planned_transcripts_body": "More natural caption segments with silence and speaker-aware breaks, steadier updates, accurate timestamps, and speaker identification.",
+	"planned_obs_title": "More OBS overlay options",
+	"planned_obs_body": "A segment-log overlay, saved custom overlay colors, and dedicated OBS plugin support for Twitch native captions and microphone mute events.",
+	"planned_control_title": "More control over transcripts",
+	"planned_control_body": "Save transcripts to disk, dedicated translation support, and transcript history.",
 
 	"how_section_label": "Setup",
 	"how_heading": "Four steps from install to on-stream subtitles.",

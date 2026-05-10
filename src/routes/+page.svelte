@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Cpu, Mic, Projector, SlidersHorizontal } from '@lucide/svelte';
+	import { AudioLines, Captions, Cpu, HardDriveDownload, Mic, Projector, SlidersHorizontal } from '@lucide/svelte';
 	import DownloadButton from '$lib/components/DownloadButton.svelte';
 	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 	import { fetchLatestRelease } from '$lib/releases';
@@ -41,38 +41,39 @@
 </svelte:head>
 
 <div class="page">
-	<!-- NAV -->
-	<nav class="nav">
-		<a href="/" class="brand">
-			<img src="/scrybe-logo.png" alt="" />
-			<span>scrybe</span>
-		</a>
-		<div class="nav-links">
-			<a href="#features">{msgs.nav_features()}</a>
-			<a href="#how">{msgs.nav_setup()}</a>
-			<a href="#whisper">whisper.cpp</a>
-			<a
-				href="https://github.com/synthlabs/scrybe"
-				class="gh"
-				target="_blank"
-				rel="noopener"
-			>
-				<svg
-					viewBox="0 0 24 24"
-					width="16"
-					height="16"
-					fill="currentColor"
-					aria-hidden="true"
-				>
-					<path
-						d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 3 .1 3.3.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"
-					/>
-				</svg>
-				<span>{msgs.nav_github()}</span>
+		<!-- NAV -->
+		<nav class="nav">
+			<a href="/" class="brand">
+				<img src="/scrybe-logo.png" alt="" />
+				<span>scrybe</span>
 			</a>
-			<LanguageSwitcher />
-		</div>
-	</nav>
+			<div class="nav-links">
+				<a href="#features">{msgs.nav_features()}</a>
+				<a href="#planned">{msgs.nav_planned()}</a>
+				<a href="#how">{msgs.nav_setup()}</a>
+				<a href="#whisper">whisper.cpp</a>
+				<a
+					href="https://github.com/synthlabs/scrybe"
+					class="gh"
+					target="_blank"
+					rel="noopener"
+				>
+					<svg
+						viewBox="0 0 24 24"
+						width="16"
+						height="16"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<path
+							d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 3 .1 3.3.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"
+						/>
+					</svg>
+					<span>{msgs.nav_github()}</span>
+				</a>
+				<LanguageSwitcher />
+			</div>
+		</nav>
 
 	<!-- HERO -->
 	<section class="hero">
@@ -135,33 +136,76 @@
 				</div>
 				<p>{msgs.feat_audio_body()}</p>
 			</div>
-			<div class="feat">
-				<div class="feat-heading">
-					<div class="ico"><Projector size={18} /></div>
-					<h3>{msgs.feat_obs_title()}</h3>
+				<div class="feat">
+					<div class="feat-heading">
+						<div class="ico"><Projector size={18} /></div>
+						<h3>{msgs.feat_obs_title()}</h3>
+					</div>
+					<p>
+						{msgs.feat_obs_body_pre()} <span class="inline-code">localhost:3030</span> {msgs.feat_obs_body_post()}
+					</p>
 				</div>
-				<p>
-					{msgs.feat_obs_body_pre()} <span class="inline-code">localhost:3030</span> {msgs.feat_obs_body_post()}
-				</p>
-			</div>
-			<div class="feat">
-				<div class="feat-heading">
-					<div class="ico"><SlidersHorizontal size={18} /></div>
-					<h3>{msgs.feat_settings_title()}</h3>
+				<div class="feat">
+					<div class="feat-heading">
+						<div class="ico"><SlidersHorizontal size={18} /></div>
+						<h3>{msgs.feat_settings_title()}</h3>
+					</div>
+					<p>{msgs.feat_settings_body()}</p>
 				</div>
-				<p>{msgs.feat_settings_body()}</p>
 			</div>
-		</div>
-	</section>
+		</section>
 
-	<!-- HOW IT WORKS -->
-	<section id="how" class="how">
-		<div class="how-copy">
-			<div class="section-label section-label-tight"><span>{msgs.how_section_label()}</span></div>
-			<h2>{msgs.how_heading()}</h2>
-			<p>{msgs.how_body()}</p>
-		</div>
-		<ol class="how-steps">
+			<!-- PLANNED FEATURES -->
+			<section id="planned" class="planned">
+					<div class="section-label section-label-stacked">
+						<span>{msgs.planned_section_label()}</span>
+					</div>
+				<div class="planned-head">
+					<h2>{msgs.planned_heading()}</h2>
+					<p>{msgs.planned_body()}</p>
+				</div>
+			<div class="planned-grid">
+				<div class="feat">
+					<div class="feat-heading">
+						<div class="ico"><AudioLines size={18} /></div>
+						<h3>{msgs.planned_audio_title()}</h3>
+					</div>
+					<p>{msgs.planned_audio_body()}</p>
+				</div>
+				<div class="feat">
+					<div class="feat-heading">
+						<div class="ico"><Captions size={18} /></div>
+						<h3>{msgs.planned_transcripts_title()}</h3>
+					</div>
+					<p>{msgs.planned_transcripts_body()}</p>
+				</div>
+				<div class="feat">
+					<div class="feat-heading">
+						<div class="ico"><Projector size={18} /></div>
+						<h3>{msgs.planned_obs_title()}</h3>
+					</div>
+					<p>{msgs.planned_obs_body()}</p>
+				</div>
+				<div class="feat">
+					<div class="feat-heading">
+						<div class="ico"><HardDriveDownload size={18} /></div>
+						<h3>{msgs.planned_control_title()}</h3>
+					</div>
+					<p>{msgs.planned_control_body()}</p>
+				</div>
+			</div>
+		</section>
+
+			<!-- HOW IT WORKS -->
+			<section id="how" class="how">
+					<div class="section-label section-label-stacked how-label">
+						<span>{msgs.how_section_label()}</span>
+					</div>
+				<div class="how-copy">
+					<h2>{msgs.how_heading()}</h2>
+					<p>{msgs.how_body()}</p>
+				</div>
+			<ol class="how-steps">
 			<li class="step">
 				<span class="step-n">1</span>
 				<span class="step-label">{msgs.how_step_1()}</span>
@@ -495,37 +539,45 @@
 		letter-spacing: 0;
 		margin-bottom: 28px;
 	}
-	.section-label-tight {
-		margin-bottom: 16px;
-	}
-	.section-label::after {
-		content: '';
-		flex: 1;
-		height: 1px;
-		background: var(--app-border);
-	}
+			.section-label::after {
+				content: '';
+				flex: 1;
+				height: 1px;
+				background: var(--app-border);
+			}
+				.section-label-stacked {
+					border-top: 1px solid var(--app-border);
+					padding-top: 0;
+				}
+			.how-label {
+				grid-column: 1 / -1;
+			margin-bottom: 0;
+		}
 
-	.features {
-		margin-top: 28px;
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1px;
-		background: var(--app-border);
-		border: 1px solid var(--app-border);
-		border-radius: var(--radius-lg);
-		overflow: hidden;
-		box-shadow: none;
-	}
-	@media (min-width: 720px) {
-		.features {
-			grid-template-columns: 1fr 1fr;
+			.features,
+		.planned-grid {
+			margin-top: 28px;
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1px;
+			background: var(--app-border);
+			border: 1px solid var(--app-border);
+			border-radius: var(--radius-lg);
+			overflow: hidden;
+			box-shadow: none;
 		}
-	}
-	@media (min-width: 1000px) {
-		.features {
-			grid-template-columns: repeat(4, 1fr);
+		@media (min-width: 720px) {
+			.features,
+			.planned-grid {
+				grid-template-columns: 1fr 1fr;
+			}
 		}
-	}
+		@media (min-width: 1000px) {
+			.features,
+			.planned-grid {
+				grid-template-columns: repeat(4, 1fr);
+			}
+		}
 
 	.feat {
 		background: var(--app-panel);
@@ -574,13 +626,35 @@
 		text-wrap: pretty;
 	}
 
-	.inline-code {
-		font-family: var(--font-mono);
-		font-size: 12.5px;
-		color: hsl(17 75% 72%);
-	}
+		.inline-code {
+			font-family: var(--font-mono);
+			font-size: 12.5px;
+			color: hsl(17 75% 72%);
+		}
 
-	/* ---------- WHISPER EXPLAINER ---------- */
+		/* ---------- PLANNED FEATURES ---------- */
+		.planned {
+			margin-top: 72px;
+		}
+		.planned-head {
+			max-width: 620px;
+		}
+		.planned-head h2 {
+			font-size: 28px;
+			font-weight: 600;
+			letter-spacing: 0;
+			margin: 0 0 14px;
+			line-height: 1.15;
+		}
+		.planned-head p {
+			font-size: 14.5px;
+			line-height: 1.6;
+			color: var(--c-fg-muted);
+			margin: 0;
+			text-wrap: pretty;
+		}
+
+		/* ---------- WHISPER EXPLAINER ---------- */
 	.whisper {
 		margin-top: 64px;
 		padding: 26px 22px;
@@ -842,10 +916,11 @@
 			min-height: 0;
 			padding: 24px 20px 26px;
 		}
-		.whisper h2,
-		.how-copy h2 {
-			font-size: 24px;
-		}
+			.whisper h2,
+			.planned-head h2,
+			.how-copy h2 {
+				font-size: 24px;
+			}
 		.step {
 			padding: 14px 14px;
 		}
