@@ -108,7 +108,7 @@
 
 		<div class="hero-visual-wrap">
 			<div class="hero-visual">
-				<img src="/scrybe_NNC63fbGrP.png" alt="Scrybe overlay editor" />
+				<img src="/scrybe_0j1h8WKu9n.png" alt="Scrybe overlay editor" />
 			</div>
 			<div class="caption-float">
 				{msgs.hero_caption_float()}<span class="cursor"></span>
