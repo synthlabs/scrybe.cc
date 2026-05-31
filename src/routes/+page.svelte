@@ -214,14 +214,14 @@
 			<li class="step">
 				<span class="step-n">2</span>
 				<span class="step-label">{msgs.how_step_2()}</span>
-				<span class="step-tag">large-v3-turbo</span>
+				<span class="step-tag"></span>
 			</li>
 			<li class="step">
 				<span class="step-n">3</span>
 				<span class="step-label"
 					>{msgs.how_step_3_pre()} <code>http://localhost:3030/app/v1/overlay</code> {msgs.how_step_3_post()}</span
 				>
-				<span class="step-tag">960 × 240</span>
+				<span class="step-tag">1920 × 1080</span>
 			</li>
 			<li class="step">
 				<span class="step-n">4</span>

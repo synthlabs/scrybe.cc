@@ -41,9 +41,9 @@
 
 	"how_section_label": "Setup",
 	"how_heading": "Four steps from install to on-stream subtitles.",
-	"how_body": "Scrybe is a desktop app based on Tauri, install it like any normal program. Choose from a set of model presets (or bring your own) and start listening.",
+	"how_body": "Scrybe is a desktop app based on Tauri, install it like any normal program. Choose from a set of model presets (or bring your own) and start transcribing.",
 	"how_step_1": "Install and launch Scrybe.",
-	"how_step_2": "Pick an input and a model.",
+	"how_step_2": "Customize the subtitle box's positioning, color, and size.",
 	"how_step_3_pre": "Add",
 	"how_step_3_post": "to OBS",
 	"how_step_4_pre": "Press",
