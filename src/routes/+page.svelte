@@ -1,6 +1,25 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { AudioLines, Captions, Cpu, HardDriveDownload, Mic, Projector, SlidersHorizontal } from '@lucide/svelte';
+	import {
+		AudioLines,
+		Captions,
+		Check,
+		Code,
+		Cpu,
+		FileText,
+		HardDriveDownload,
+		LockKeyhole,
+		Mic,
+		MonitorPlay,
+		Palette,
+		Projector,
+		RadioTower,
+		Rocket,
+		Settings2,
+		ShieldCheck,
+		SlidersHorizontal,
+		Sparkles
+	} from '@lucide/svelte';
 	import DownloadButton from '$lib/components/DownloadButton.svelte';
 	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 	import { fetchLatestRelease } from '$lib/releases';
@@ -27,7 +46,7 @@
 				filenames = fresh.filenames;
 			}
 		} catch {
-			/* silent — keep build-time data */
+			/* silent - keep build-time data */
 		}
 	});
 </script>
@@ -40,21 +59,29 @@
 	<link rel="alternate" hreflang="x-default" href="https://scrybe.cc/" />
 </svelte:head>
 
-<div class="page">
-		<!-- NAV -->
-		<nav class="nav">
-			<a href="/" class="brand">
-				<img src="/scrybe-logo.png" alt="" />
-				<span>scrybe</span>
-			</a>
-			<div class="nav-links">
-				<a href="#features">{msgs.nav_features()}</a>
-				<a href="#planned">{msgs.nav_planned()}</a>
-				<a href="#how">{msgs.nav_setup()}</a>
-				<a href="#whisper">whisper.cpp</a>
+<div class="min-h-screen bg-base-100 text-base-content" data-theme="scrybe">
+	<nav class="sticky top-0 z-40 border-b border-base-300/80 bg-base-100/92 backdrop-blur-xl">
+		<div class="navbar mx-auto min-h-16 max-w-352 px-4 sm:px-6 lg:px-8">
+			<div class="navbar-start min-w-0">
+				<a href="/" class="inline-flex min-w-0 items-center gap-3 font-semibold">
+					<img class="size-10 rounded-box" src="/scrybe-logo.png" alt="" />
+					<span class="text-base uppercase tracking-normal">scrybe</span>
+				</a>
+			</div>
+
+			<div class="navbar-center hidden lg:flex">
+				<div class="join">
+					<a class="btn btn-ghost btn-sm join-item" href="#features">{msgs.workflow_section_label()}</a>
+					<a class="btn btn-ghost btn-sm join-item" href="#how">{msgs.how_section_label()}</a>
+					<a class="btn btn-ghost btn-sm join-item" href="#planned">{msgs.planned_section_label()}</a>
+					<a class="btn btn-ghost btn-sm join-item" href="#whisper">{msgs.tech_section_label()}</a>
+				</div>
+			</div>
+
+			<div class="navbar-end gap-2">
 				<a
 					href="https://github.com/synthlabs/scrybe"
-					class="gh"
+					class="btn btn-ghost btn-sm hidden sm:inline-flex"
 					target="_blank"
 					rel="noopener"
 				>
@@ -73,895 +100,341 @@
 				</a>
 				<LanguageSwitcher />
 			</div>
-		</nav>
-
-	<!-- HERO -->
-	<section class="hero">
-		<div class="hero-copy">
-			<span class="eyebrow">
-				<span class="dot"></span>
-				<span>v{shortVersion} · {msgs.hero_status()}</span>
-			</span>
-
-			<h1 class="headline">
-				{msgs.hero_headline()}
-			</h1>
-
-			<p class="sub">
-				{msgs.hero_subtitle()} <span class="sub-caution">{msgs.hero_subtitle_caution()}</span>
-			</p>
-
-			<DownloadButton {assets} {filenames} />
-
-			<div class="dl-meta">
-				<span>{version}</span>
-				<span class="sep">·</span>
-				<span>AGPL-3.0</span>
-				<span class="sep">·</span>
-				<a
-					href="https://github.com/synthlabs/scrybe/releases"
-					target="_blank"
-					rel="noopener">{msgs.hero_meta_all_releases()}</a
-				>
-			</div>
 		</div>
 
-		<div class="hero-visual-wrap">
-			<div class="hero-visual">
-				<img src="/scrybe_0j1h8WKu9n.png" alt="Scrybe overlay editor" />
-			</div>
-			<div class="caption-float">
-				{msgs.hero_caption_float()}<span class="cursor"></span>
-			</div>
+		<div class="mx-auto flex max-w-352 gap-2 overflow-x-auto px-4 pb-3 sm:px-6 lg:hidden">
+			<a class="btn btn-ghost btn-xs shrink-0" href="#features">{msgs.workflow_section_label()}</a>
+			<a class="btn btn-ghost btn-xs shrink-0" href="#how">{msgs.how_section_label()}</a>
+			<a class="btn btn-ghost btn-xs shrink-0" href="#planned">{msgs.planned_section_label()}</a>
+			<a class="btn btn-ghost btn-xs shrink-0" href="#whisper">{msgs.tech_section_label()}</a>
+			<a
+				class="btn btn-ghost btn-xs shrink-0 sm:hidden"
+				href="https://github.com/synthlabs/scrybe"
+				target="_blank"
+				rel="noopener">{msgs.nav_github()}</a
+			>
 		</div>
-	</section>
+	</nav>
 
-	<!-- FEATURES -->
-	<section id="features">
-		<div class="section-label">
-			<span>{msgs.features_section_label()}</span>
-		</div>
-		<div class="features">
-			<div class="feat">
-				<div class="feat-heading">
-					<div class="ico"><Cpu size={18} /></div>
-					<h3>{msgs.feat_local_title()}</h3>
+	<header class="relative isolate overflow-hidden border-b border-base-300">
+		<div class="mx-auto grid max-w-352 gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
+			<div class="flex flex-col justify-center">
+				<div class="mb-5 flex flex-wrap gap-2">
+					<span class="badge badge-primary badge-outline gap-2 py-3 font-mono text-[11px] uppercase">
+						<span class="status status-success"></span>
+						v{shortVersion} · {msgs.hero_status()}
+					</span>
 				</div>
-				<p>{msgs.feat_local_body()}</p>
-			</div>
-			<div class="feat">
-				<div class="feat-heading">
-					<div class="ico"><Mic size={18} /></div>
-					<h3>{msgs.feat_audio_title()}</h3>
-				</div>
-				<p>{msgs.feat_audio_body()}</p>
-			</div>
-				<div class="feat">
-					<div class="feat-heading">
-						<div class="ico"><Projector size={18} /></div>
-						<h3>{msgs.feat_obs_title()}</h3>
+
+				<h1 class="max-w-3xl text-4xl font-semibold leading-tight tracking-normal text-balance sm:text-5xl lg:text-6xl">
+					{msgs.hero_headline()}
+				</h1>
+
+				<p class="mt-6 max-w-2xl text-base leading-7 text-base-content/72 sm:text-lg">
+					{msgs.hero_subtitle()}
+					<span class="text-base-content/52">{msgs.hero_subtitle_caution()}</span>
+				</p>
+
+				<div class="mt-8">
+					<DownloadButton {assets} {filenames} />
+					<div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-base-content/52">
+						<span>{version}</span>
+						<span aria-hidden="true">/</span>
+						<span>AGPL-3.0</span>
+						<span aria-hidden="true">/</span>
+						<a
+							class="link-hover link"
+							href="https://github.com/synthlabs/scrybe/releases"
+							target="_blank"
+							rel="noopener">{msgs.hero_meta_all_releases()}</a
+						>
 					</div>
-					<p>
-						{msgs.feat_obs_body_pre()} <span class="inline-code">localhost:3030</span> {msgs.feat_obs_body_post()}
-					</p>
 				</div>
-				<div class="feat">
-					<div class="feat-heading">
-						<div class="ico"><SlidersHorizontal size={18} /></div>
-						<h3>{msgs.feat_settings_title()}</h3>
+
+			</div>
+
+			<div class="flex items-center">
+				<div class="relative w-full">
+					<div class="absolute -inset-3 rounded-box border border-primary/10 bg-base-200/50 blur-xl"></div>
+					<figure class="relative overflow-hidden rounded-box border border-base-300 bg-base-200 shadow-2xl shadow-black/30">
+						<img
+							src="/scrybe_0j1h8WKu9n.png"
+							alt="Scrybe overlay editor showing caption placement and OBS browser source settings"
+							class="block w-full"
+						/>
+					</figure>
+					<div class="mx-auto mt-3 w-fit max-w-full rounded-box border border-white/10 bg-black/76 px-4 py-3 text-center text-sm font-medium text-white shadow-xl sm:absolute sm:bottom-5 sm:left-1/2 sm:mt-0 sm:-translate-x-1/2 sm:whitespace-nowrap">
+						{msgs.hero_caption_float()}<span class="ml-1 inline-block h-4 w-px translate-y-0.5 animate-pulse bg-white"></span>
 					</div>
-					<p>{msgs.feat_settings_body()}</p>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="border-b border-base-300 bg-base-200/35">
+			<div class="mx-auto grid max-w-352 gap-px overflow-hidden border-x border-base-300 bg-base-300 sm:grid-cols-3">
+				<div class="bg-base-100 p-6">
+					<div class="flex items-center gap-3">
+						<LockKeyhole size={20} class="text-accent" />
+						<h2 class="text-base font-semibold tracking-normal">{msgs.trust_free_title()}</h2>
+					</div>
+					<p class="mt-3 text-sm leading-6 text-base-content/62">{msgs.trust_free_body()}</p>
+				</div>
+				<div class="bg-base-100 p-6">
+					<div class="flex items-center gap-3">
+						<ShieldCheck size={20} class="text-primary" />
+						<h2 class="text-base font-semibold tracking-normal">{msgs.trust_privacy_title()}</h2>
+					</div>
+					<p class="mt-3 text-sm leading-6 text-base-content/62">{msgs.trust_privacy_body()}</p>
+				</div>
+				<div class="bg-base-100 p-6">
+					<div class="flex items-center gap-3">
+						<Code size={20} class="text-accent" />
+						<h2 class="text-base font-semibold tracking-normal">{msgs.trust_creator_title()}</h2>
+					</div>
+					<p class="mt-3 text-sm leading-6 text-base-content/62">{msgs.trust_creator_body()}</p>
 				</div>
 			</div>
 		</section>
 
-			<!-- PLANNED FEATURES -->
-			<section id="planned" class="planned">
-					<div class="section-label section-label-stacked">
-						<span>{msgs.planned_section_label()}</span>
-					</div>
-				<div class="planned-head">
-					<h2>{msgs.planned_heading()}</h2>
-					<p>{msgs.planned_body()}</p>
+		<section id="features" class="mx-auto max-w-352 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+			<div class="mt-12 grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+				<div>
+					<span class="badge badge-accent badge-outline mb-4">{msgs.features_section_label()}</span>
+					<h2 class="text-2xl font-semibold tracking-normal sm:text-3xl">{msgs.features_heading()}</h2>
+					<p class="mt-4 text-sm leading-6 text-base-content/62">{msgs.features_body()}</p>
 				</div>
-			<div class="planned-grid">
-				<div class="feat">
-					<div class="feat-heading">
-						<div class="ico"><AudioLines size={18} /></div>
-						<h3>{msgs.planned_audio_title()}</h3>
-					</div>
-					<p>{msgs.planned_audio_body()}</p>
-				</div>
-				<div class="feat">
-					<div class="feat-heading">
-						<div class="ico"><Captions size={18} /></div>
-						<h3>{msgs.planned_transcripts_title()}</h3>
-					</div>
-					<p>{msgs.planned_transcripts_body()}</p>
-				</div>
-				<div class="feat">
-					<div class="feat-heading">
-						<div class="ico"><Projector size={18} /></div>
-						<h3>{msgs.planned_obs_title()}</h3>
-					</div>
-					<p>{msgs.planned_obs_body()}</p>
-				</div>
-				<div class="feat">
-					<div class="feat-heading">
-						<div class="ico"><HardDriveDownload size={18} /></div>
-						<h3>{msgs.planned_control_title()}</h3>
-					</div>
-					<p>{msgs.planned_control_body()}</p>
+
+				<div class="grid gap-4 sm:grid-cols-2">
+					<article class="card border border-base-300 bg-base-200/80">
+						<div class="card-body">
+							<Cpu size={22} class="text-primary" />
+							<h3 class="card-title text-base tracking-normal">{msgs.feat_local_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_local_body()}</p>
+						</div>
+					</article>
+					<article class="card border border-base-300 bg-base-200/80">
+						<div class="card-body">
+							<AudioLines size={22} class="text-accent" />
+							<h3 class="card-title text-base tracking-normal">{msgs.feat_audio_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_audio_body()}</p>
+						</div>
+					</article>
+					<article class="card border border-base-300 bg-base-200/80">
+						<div class="card-body">
+							<Captions size={22} class="text-secondary" />
+							<h3 class="card-title text-base tracking-normal">{msgs.feat_style_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_style_body()}</p>
+						</div>
+					</article>
+					<article class="card border border-base-300 bg-base-200/80">
+						<div class="card-body">
+							<SlidersHorizontal size={22} class="text-accent" />
+							<h3 class="card-title text-base tracking-normal">{msgs.feat_settings_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_settings_body()}</p>
+						</div>
+					</article>
 				</div>
 			</div>
 		</section>
 
-			<!-- HOW IT WORKS -->
-			<section id="how" class="how">
-					<div class="section-label section-label-stacked how-label">
-						<span>{msgs.how_section_label()}</span>
-					</div>
-				<div class="how-copy">
-					<h2>{msgs.how_heading()}</h2>
-					<p>{msgs.how_body()}</p>
-				</div>
-			<ol class="how-steps">
-			<li class="step">
-				<span class="step-n">1</span>
-				<span class="step-label">{msgs.how_step_1()}</span>
-				<span class="step-tag"></span>
-			</li>
-			<li class="step">
-				<span class="step-n">2</span>
-				<span class="step-label">{msgs.how_step_2()}</span>
-				<span class="step-tag"></span>
-			</li>
-			<li class="step">
-				<span class="step-n">3</span>
-				<span class="step-label"
-					>{msgs.how_step_3_pre()} <code>http://localhost:3030/app/v1/overlay</code> {msgs.how_step_3_post()}</span
-				>
-				<span class="step-tag">1920 × 1080</span>
-			</li>
-			<li class="step">
-				<span class="step-n">4</span>
-				<span class="step-label"
-					>{msgs.how_step_4_pre()} <code>Start</code>{msgs.how_step_4_post()}</span
-				>
-				<span class="step-tag">{msgs.how_step_4_tag()}</span>
-			</li>
-		</ol>
-	</section>
-
-	<!-- WHISPER EXPLAINER -->
-	<section id="whisper" class="whisper">
-		<div class="whisper-head">
-			<span class="whisper-tag">
-				<span class="dot"></span>
-				<span>{msgs.whisper_tag()}</span>
-			</span>
-			<h2>{msgs.whisper_heading_prefix()} <span class="mono">whisper.cpp</span>.</h2>
-			<div class="whisper-stats">
-				<div class="wstat">
-					<div class="wstat-val">C/C++</div>
-					<div class="wstat-lbl">{msgs.whisper_stat_runtime_label()}</div>
-				</div>
-				<div class="wstat">
-					<div class="wstat-val">CPU + GPU</div>
-					<div class="wstat-lbl">{msgs.whisper_stat_compute_label()}</div>
-				</div>
-				<div class="wstat">
-					<div class="wstat-val">$0</div>
-					<div class="wstat-lbl">{msgs.whisper_stat_cost_label()}</div>
+		<section id="how" class="border-y border-base-300 bg-base-200/35">
+			<div class="mx-auto grid max-w-352 gap-10 px-4 py-16 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+				<ol class="steps steps-vertical gap-3">
+					<li class="step step-primary">
+						<span class="grid gap-1 text-left">
+							<span class="font-semibold">{msgs.how_step_1_title()}</span>
+							<span class="text-xs leading-5 text-base-content/58">{msgs.how_step_1_body()}</span>
+						</span>
+					</li>
+					<li class="step step-primary">
+						<span class="grid gap-1 text-left">
+							<span class="font-semibold">{msgs.how_step_2_title()}</span>
+							<span class="text-xs leading-5 text-base-content/58">{msgs.how_step_2_body()}</span>
+						</span>
+					</li>
+					<li class="step step-primary">
+						<span class="grid gap-1 text-left">
+							<span class="font-semibold">{msgs.how_step_3_title()}</span>
+							<code class="max-w-[18rem] overflow-hidden text-ellipsis rounded-field border border-base-300 bg-base-100 px-2 py-1 font-mono text-[11px] text-primary mt-2">
+								http://localhost:3030/app/v1/overlay
+							</code>
+						</span>
+					</li>
+					<li class="step step-primary">
+						<span class="grid gap-1 text-left">
+							<span class="font-semibold">{msgs.how_step_4_title()}</span>
+							<span class="text-xs leading-5 text-base-content/58">{msgs.how_step_4_body()}</span>
+						</span>
+					</li>
+				</ol>
+                <div class="mt-2">
+					<span class="badge badge-secondary badge-outline mb-4">{msgs.how_section_label()}</span>
+					<h2 class="text-3xl font-semibold tracking-normal text-balance sm:text-4xl">{msgs.how_heading()}</h2>
+					<p class="mt-4 text-base leading-7 text-base-content/68">{msgs.how_body()}</p>
 				</div>
 			</div>
-		</div>
-		<div class="whisper-body">
-			<p>{msgs.whisper_body_p1_pre()}</p>
-			<p>
-				{msgs.whisper_body_p2_pre()}
-				<span class="inline-code">tiny</span> {msgs.whisper_body_p2_mid()}
-				<span class="inline-code">large-v3-turbo</span> {msgs.whisper_body_p2_post()}
-			</p>
-			<p class="whisper-link">
-				{msgs.whisper_link_prefix()} <a
-					href="https://github.com/ggml-org/whisper.cpp"
-					target="_blank"
-					rel="noopener">github.com/ggml-org/whisper.cpp</a
-				>.
-			</p>
-		</div>
-	</section>
+		</section>
 
-	<!-- FOOTER -->
-	<footer class="foot">
+		<section id="planned" class="mx-auto max-w-352 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+			<div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] xl:gap-16">
+				<div>
+					<span class="badge badge-accent badge-outline mb-4">{msgs.planned_section_label()}</span>
+					<h2 class="text-3xl font-semibold tracking-normal text-balance sm:text-4xl">
+						{msgs.planned_heading()}
+					</h2>
+					<p class="mt-4 text-base leading-7 text-base-content/68">{msgs.planned_body()}</p>
+				</div>
+
+				<div class="grid gap-4 sm:grid-cols-2">
+					<article class="card border border-base-300 bg-base-200">
+						<div class="card-body">
+							<div class="flex items-start justify-between gap-3">
+								<AudioLines size={22} class="text-primary" />
+								<span class="badge badge-ghost">{msgs.roadmap_badge_next()}</span>
+							</div>
+							<h3 class="card-title text-base tracking-normal">{msgs.planned_audio_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_audio_body()}</p>
+						</div>
+					</article>
+					<article class="card border border-base-300 bg-base-200">
+						<div class="card-body">
+							<div class="flex items-start justify-between gap-3">
+								<Captions size={22} class="text-secondary" />
+								<span class="badge badge-ghost">{msgs.roadmap_badge_next()}</span>
+							</div>
+							<h3 class="card-title text-base tracking-normal">{msgs.planned_transcripts_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_transcripts_body()}</p>
+						</div>
+					</article>
+					<article class="card border border-base-300 bg-base-200">
+						<div class="card-body">
+							<div class="flex items-start justify-between gap-3">
+								<Projector size={22} class="text-info" />
+								<span class="badge badge-ghost">{msgs.roadmap_badge_later()}</span>
+							</div>
+							<h3 class="card-title text-base tracking-normal">{msgs.planned_obs_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_obs_body()}</p>
+						</div>
+					</article>
+					<article class="card border border-base-300 bg-base-200">
+						<div class="card-body">
+							<div class="flex items-start justify-between gap-3">
+								<FileText size={22} class="text-accent" />
+								<span class="badge badge-ghost">{msgs.roadmap_badge_later()}</span>
+							</div>
+							<h3 class="card-title text-base tracking-normal">{msgs.planned_control_title()}</h3>
+							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_control_body()}</p>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="whisper" class="border-y border-base-300 bg-base-200/35">
+			<div class="mx-auto max-w-352 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+					<div>
+						<span class="badge badge-secondary badge-outline mb-4">{msgs.tech_section_label()}</span>
+						<h2 class="text-3xl font-semibold tracking-normal text-balance sm:text-4xl">{msgs.tech_heading()}</h2>
+						<p class="mt-4 text-base leading-7 text-base-content/68">{msgs.tech_body()}</p>
+
+						<div class="stats stats-vertical mt-8 w-full border border-base-300 bg-base-100 shadow-none sm:stats-horizontal">
+							<div class="stat">
+								<div class="stat-title">{msgs.tech_stat_runtime_label()}</div>
+								<div class="stat-value text-2xl text-primary">{msgs.tech_stat_runtime_value()}</div>
+							</div>
+							<div class="stat">
+								<div class="stat-title">{msgs.tech_stat_compute_label()}</div>
+								<div class="stat-value text-2xl text-secondary">{msgs.tech_stat_compute_value()}</div>
+							</div>
+							<div class="stat">
+								<div class="stat-title">{msgs.tech_stat_cost_label()}</div>
+								<div class="stat-value text-2xl text-accent">{msgs.tech_stat_cost_value()}</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="join join-vertical w-full">
+						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100" open>
+							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
+								<Cpu size={20} class="text-primary" />
+								{msgs.tech_whisper_title()}
+							</summary>
+							<div class="collapse-content text-sm leading-6 text-base-content/64">
+								<p>{msgs.tech_whisper_body()}</p>
+								<p class="mt-3">
+									{msgs.tech_whisper_link_prefix()}
+									<a
+										class="link-hover link"
+										href="https://github.com/ggml-org/whisper.cpp"
+										target="_blank"
+										rel="noopener">github.com/ggml-org/whisper.cpp</a
+									>.
+								</p>
+							</div>
+						</details>
+
+						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100">
+							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
+								<RadioTower size={20} class="text-info" />
+								{msgs.tech_overlay_title()}
+							</summary>
+							<div class="collapse-content text-sm leading-6 text-base-content/64">
+								<p>{msgs.tech_overlay_body()}</p>
+							</div>
+						</details>
+
+						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100">
+							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
+								<HardDriveDownload size={20} class="text-accent" />
+								{msgs.tech_platforms_title()}
+							</summary>
+							<div class="collapse-content text-sm leading-6 text-base-content/64">
+								<p>{msgs.tech_platforms_body()}</p>
+							</div>
+						</details>
+
+						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100">
+							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
+								<Settings2 size={20} class="text-secondary" />
+								{msgs.tech_project_title()}
+							</summary>
+							<div class="collapse-content text-sm leading-6 text-base-content/64">
+								<p>{msgs.tech_project_body()}</p>
+							</div>
+						</details>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="mx-auto flex max-w-352 flex-col gap-5 px-4 py-10 text-sm text-base-content/58 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
 		<div>
 			{msgs.foot_built_by()}
 			<a
 				href="https://github.com/synthlabs"
 				target="_blank"
 				rel="noopener"
-				class="foot-inline">synthlabs</a
+				class="link-hover link">synthlabs</a
 			>. {msgs.foot_open_source_prefix()}
 			<a
 				href="https://github.com/synthlabs/scrybe"
 				target="_blank"
 				rel="noopener"
-				class="foot-inline">{msgs.foot_repository()}</a
+				class="link-hover link">{msgs.foot_repository()}</a
 			>.
 		</div>
-		<div class="foot-links">
-			<a href="https://github.com/synthlabs/scrybe/issues" target="_blank" rel="noopener"
+		<div class="flex flex-wrap gap-4">
+			<a class="link-hover link" href="https://github.com/synthlabs/scrybe/issues" target="_blank" rel="noopener"
 				>{msgs.foot_issues()}</a
 			>
-			<a href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener"
+			<a class="link-hover link" href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener"
 				>{msgs.foot_releases()}</a
 			>
-			<a href="https://github.com/synthlabs/pepo" target="_blank" rel="noopener">Pepo</a>
+			<a class="link-hover link" href="https://github.com/synthlabs/pepo" target="_blank" rel="noopener">Pepo</a>
 		</div>
 	</footer>
 </div>
-
-<style>
-	.page {
-		--app-shell: hsl(220 13% 7%);
-		--app-panel: hsl(220 14% 9%);
-		--app-border: hsl(216 15% 17%);
-		--app-muted: hsl(207 28% 76%);
-		max-width: 1180px;
-		margin: 0 auto;
-		padding: 16px clamp(18px, 5vw, 34px) 72px;
-		position: relative;
-	}
-
-	/* ---------- HEADER ---------- */
-	.nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 12px 0 14px;
-		min-height: 64px;
-		gap: 18px;
-		border-bottom: 1px solid var(--app-border);
-	}
-	.brand {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		font-weight: 600;
-		font-size: 14px;
-		letter-spacing: 0;
-		text-transform: uppercase;
-	}
-	.brand img {
-		width: 42px;
-		height: 42px;
-		display: block;
-	}
-	.nav-links {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 13px;
-		color: var(--c-fg-muted);
-		min-width: 0;
-	}
-	.nav-links a {
-		padding: 7px 10px;
-		border: 1px solid transparent;
-		border-radius: var(--radius-md);
-		transition:
-			border-color 150ms ease-out,
-			color 150ms ease-out,
-			background-color 150ms ease-out;
-	}
-	.nav-links a:hover {
-		color: var(--c-fg);
-		background: var(--app-panel);
-		border-color: var(--app-border);
-	}
-	.nav-links .gh {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-	}
-
-	/* ---------- HERO ---------- */
-	.hero {
-		padding: 36px 0 56px;
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 28px;
-		align-items: center;
-		border-bottom: 1px solid var(--app-border);
-	}
-	@media (min-width: 880px) {
-		.hero {
-			grid-template-columns: minmax(0, 0.9fr) minmax(430px, 1.1fr);
-			gap: 44px;
-			padding: 56px 0 82px;
-		}
-	}
-
-	.hero-copy {
-		position: relative;
-		padding-left: 18px;
-		border-left: 2px solid var(--c-scrybe-hex);
-	}
-
-	.eyebrow {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		font-family: var(--font-mono);
-		font-size: 11px;
-		color: var(--c-fg-muted);
-		padding: 6px 9px;
-		border: 1px solid var(--app-border);
-		border-radius: var(--radius-md);
-		margin-bottom: 22px;
-		background: var(--app-panel);
-		text-transform: uppercase;
-	}
-	.eyebrow .dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 1px;
-		background: var(--c-scrybe-hex);
-		box-shadow: 0 0 0 3px hsl(17 75% 65% / 0.14);
-	}
-
-	h1.headline {
-		font-size: 42px;
-		line-height: 1;
-		letter-spacing: 0;
-		font-weight: 600;
-		margin: 0 0 20px;
-		text-wrap: balance;
-	}
-	@media (min-width: 720px) {
-		h1.headline {
-			font-size: 64px;
-		}
-	}
-	h1.headline .accent-word {
-		color: var(--c-scrybe-hex);
-		text-decoration: underline;
-		text-decoration-thickness: 3px;
-		text-underline-offset: 8px;
-	}
-
-	.sub {
-		font-size: 17px;
-		line-height: 1.55;
-		color: var(--app-muted);
-		max-width: 44ch;
-		margin: 0 0 32px;
-		text-wrap: pretty;
-	}
-	.sub-caution {
-		color: var(--c-fg-muted);
-		font-size: 0.92em;
-	}
-
-	.dl-meta {
-		margin-top: 14px;
-		font-size: 12px;
-		color: var(--c-fg-muted);
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		flex-wrap: wrap;
-	}
-	.dl-meta .sep {
-		color: hsl(215 28% 25%);
-	}
-	.dl-meta a {
-		text-decoration: underline;
-		text-underline-offset: 4px;
-		text-decoration-color: hsl(215 28% 25%);
-	}
-	.dl-meta a:hover {
-		text-decoration-color: var(--c-fg-muted);
-	}
-
-	/* ---------- HERO VISUAL ---------- */
-	.hero-visual-wrap {
-		position: relative;
-	}
-	.hero-visual {
-		position: relative;
-		border-radius: var(--radius-lg);
-		background: transparent;
-		border: 0;
-		overflow: hidden;
-		box-shadow: none;
-	}
-	.hero-visual img {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-	.hero-visual::after {
-		content: '';
-		position: absolute;
-		inset: 0px;
-		border: 1px solid rgb(0 0 0 / 0.85);
-		border-radius: calc(var(--radius-lg) - 1px);
-		pointer-events: none;
-	}
-	.caption-float {
-		margin: 12px auto 0;
-		padding: 10px 14px;
-		width: min(100%, 340px);
-		background: rgba(0, 0, 0, 0.72);
-		border-radius: var(--radius-xl);
-		font-size: 13px;
-		font-weight: 500;
-		color: white;
-		letter-spacing: 0;
-		line-height: 1.35;
-		text-align: center;
-		backdrop-filter: blur(8px);
-		border: 1px solid hsl(0 0% 100% / 0.06);
-		box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.8);
-	}
-	.caption-float .cursor {
-		display: inline-block;
-		width: 1px;
-		height: 15px;
-		background: white;
-		margin-left: 2px;
-		transform: translateY(2px);
-		animation: caret-blink 1.25s ease-out infinite;
-	}
-	@keyframes caret-blink {
-		0%,
-		70%,
-		100% {
-			opacity: 1;
-		}
-		20%,
-		50% {
-			opacity: 0;
-		}
-	}
-
-	/* ---------- FEATURES ---------- */
-	.section-label {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		font-family: var(--font-mono);
-		font-size: 12px;
-		color: var(--c-fg-muted);
-		text-transform: uppercase;
-		letter-spacing: 0;
-		margin-bottom: 28px;
-	}
-			.section-label::after {
-				content: '';
-				flex: 1;
-				height: 1px;
-				background: var(--app-border);
-			}
-				.section-label-stacked {
-					border-top: 1px solid var(--app-border);
-					padding-top: 0;
-				}
-			.how-label {
-				grid-column: 1 / -1;
-			margin-bottom: 0;
-		}
-
-			.features,
-		.planned-grid {
-			margin-top: 28px;
-			display: grid;
-			grid-template-columns: 1fr;
-			gap: 1px;
-			background: var(--app-border);
-			border: 1px solid var(--app-border);
-			border-radius: var(--radius-lg);
-			overflow: hidden;
-			box-shadow: none;
-		}
-		@media (min-width: 720px) {
-			.features,
-			.planned-grid {
-				grid-template-columns: 1fr 1fr;
-			}
-		}
-		@media (min-width: 1000px) {
-			.features,
-			.planned-grid {
-				grid-template-columns: repeat(4, 1fr);
-			}
-		}
-
-	.feat {
-		background: var(--app-panel);
-		padding: 26px 22px 30px;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		min-height: 190px;
-		position: relative;
-	}
-	.feat::before {
-		content: none;
-	}
-	.feat-heading {
-		display: inline-flex;
-		align-items: center;
-		gap: 12px;
-	}
-	.feat .ico {
-		width: 34px;
-		height: 34px;
-		border-radius: var(--radius-md);
-		background: var(--app-shell);
-		border: 1px solid var(--app-border);
-		color: hsl(17 75% 70%);
-		display: grid;
-		place-items: center;
-		flex: 0 0 auto;
-	}
-	.feat .ico :global(svg) {
-		width: 18px;
-		height: 18px;
-	}
-	.feat h3 {
-		font-size: 15px;
-		font-weight: 600;
-		margin: 0;
-		color: var(--c-fg);
-		letter-spacing: 0;
-	}
-	.feat p {
-		font-size: 13.5px;
-		line-height: 1.55;
-		color: var(--c-fg-muted);
-		margin: 0;
-		text-wrap: pretty;
-	}
-
-		.inline-code {
-			font-family: var(--font-mono);
-			font-size: 12.5px;
-			color: hsl(17 75% 72%);
-		}
-
-		/* ---------- PLANNED FEATURES ---------- */
-		.planned {
-			margin-top: 72px;
-		}
-		.planned-head {
-			max-width: 620px;
-		}
-		.planned-head h2 {
-			font-size: 28px;
-			font-weight: 600;
-			letter-spacing: 0;
-			margin: 0 0 14px;
-			line-height: 1.15;
-		}
-		.planned-head p {
-			font-size: 14.5px;
-			line-height: 1.6;
-			color: var(--c-fg-muted);
-			margin: 0;
-			text-wrap: pretty;
-		}
-
-		/* ---------- WHISPER EXPLAINER ---------- */
-	.whisper {
-		margin-top: 64px;
-		padding: 26px 22px;
-		border: 1px solid var(--app-border);
-		border-radius: var(--radius-lg);
-		background: var(--app-panel);
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 28px;
-		box-shadow: none;
-	}
-	@media (min-width: 880px) {
-		.whisper {
-			grid-template-columns: 1fr 1.1fr;
-			gap: 48px;
-			padding: 44px 44px;
-			align-items: center;
-		}
-	}
-	.whisper-head {
-		display: flex;
-		flex-direction: column;
-		gap: 14px;
-	}
-	.whisper-tag {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		align-self: flex-start;
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0;
-		color: hsl(17 75% 72%);
-		padding: 4px 10px;
-		border: 1px solid var(--app-border);
-		border-radius: var(--radius-md);
-		background: var(--app-shell);
-		text-transform: uppercase;
-	}
-	.whisper-tag .dot {
-		width: 5px;
-		height: 5px;
-		border-radius: 1px;
-		background: hsl(17 75% 70%);
-	}
-	.whisper h2 {
-		font-size: 24px;
-		font-weight: 600;
-		letter-spacing: 0;
-		margin: 0;
-		line-height: 1.2;
-	}
-	.whisper h2 .mono {
-		font-family: var(--font-mono);
-		font-weight: 600;
-	}
-	.whisper-body {
-		display: flex;
-		flex-direction: column;
-		gap: 14px;
-	}
-	.whisper-body p {
-		font-size: 14px;
-		line-height: 1.6;
-		color: var(--c-fg-muted);
-		margin: 0;
-		text-wrap: pretty;
-		max-width: 54ch;
-	}
-	.whisper-body a {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-		text-decoration-color: hsl(215 28% 25%);
-	}
-	.whisper-body a:hover {
-		text-decoration-color: var(--c-fg-muted);
-	}
-	.whisper-link {
-		font-size: 12.5px;
-	}
-	.whisper-stats {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 12px;
-		margin-top: 8px;
-	}
-	.wstat {
-		padding: 14px 14px;
-		border: 1px solid var(--app-border);
-		border-radius: var(--radius-md);
-		background: var(--app-shell);
-	}
-	.wstat .wstat-val {
-		font-family: var(--font-mono);
-		font-size: 18px;
-		font-weight: 600;
-		color: var(--c-fg);
-		letter-spacing: 0;
-		line-height: 1.1;
-	}
-	.wstat .wstat-lbl {
-		font-size: 11px;
-		color: var(--c-fg-muted);
-		margin-top: 4px;
-		line-height: 1.2;
-	}
-
-	/* ---------- HOW IT WORKS ---------- */
-	.how {
-		margin-top: 72px;
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 28px;
-	}
-	@media (min-width: 880px) {
-		.how {
-			grid-template-columns: 0.9fr 1.1fr;
-			gap: 64px;
-			align-items: center;
-		}
-	}
-	.how-copy h2 {
-		font-size: 28px;
-		font-weight: 600;
-		letter-spacing: 0;
-		margin: 0 0 14px;
-		line-height: 1.15;
-	}
-	.how-copy p {
-		font-size: 14.5px;
-		line-height: 1.6;
-		color: var(--c-fg-muted);
-		margin: 0 0 8px;
-		max-width: 46ch;
-	}
-
-	.how-steps {
-		display: flex;
-		flex-direction: column;
-		gap: 0;
-		border: 1px solid var(--app-border);
-		border-radius: var(--radius-lg);
-		overflow: hidden;
-		background: var(--app-panel);
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		box-shadow: none;
-	}
-	.step {
-		display: grid;
-		grid-template-columns: 28px minmax(0, 1fr);
-		align-items: center;
-		gap: 12px;
-		padding: 14px 18px;
-		border-bottom: 1px solid var(--app-border);
-		font-size: 14px;
-	}
-	.step:last-child {
-		border-bottom: none;
-	}
-	.step-n {
-		width: 24px;
-		height: 24px;
-		border-radius: var(--radius-sm);
-		background: var(--app-shell);
-		border: 1px solid var(--app-border);
-		color: hsl(17 75% 72%);
-		font-size: 12px;
-		font-weight: 600;
-		display: grid;
-		place-items: center;
-		font-family: var(--font-mono);
-	}
-	.step-label {
-		color: var(--c-fg);
-		min-width: 0;
-	}
-	.step-label code {
-		font-family: var(--font-mono);
-		font-size: 12.5px;
-		padding: 2px 6px;
-		background: var(--app-shell);
-		border: 1px solid var(--app-border);
-		border-radius: 3px;
-		color: hsl(17 75% 72%);
-	}
-	.step-tag {
-		font-size: 11px;
-		color: var(--c-fg-muted);
-		font-family: var(--font-mono);
-		grid-column: 2;
-		overflow-wrap: anywhere;
-	}
-
-	/* ---------- FOOTER ---------- */
-	.foot {
-		margin-top: 72px;
-		padding-top: 28px;
-		border-top: 1px solid var(--app-border);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 16px;
-		font-size: 12.5px;
-		color: var(--c-fg-muted);
-		flex-wrap: wrap;
-	}
-	.foot-inline {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-	.foot-links {
-		display: flex;
-		gap: 20px;
-	}
-	.foot-links a:hover {
-		color: var(--c-fg);
-	}
-
-	@media (max-width: 719px) {
-		.nav {
-			align-items: flex-start;
-			flex-direction: column;
-			padding-top: 0;
-		}
-		.brand img {
-			width: 44px;
-			height: 44px;
-		}
-		.nav-links {
-			width: 100%;
-			gap: 18px;
-			overflow-x: auto;
-			padding-bottom: 6px;
-			scrollbar-width: none;
-		}
-		.nav-links::-webkit-scrollbar {
-			display: none;
-		}
-		.nav-links a,
-		.nav-links :global(.ls) {
-			flex: 0 0 auto;
-		}
-		.nav-links .gh span {
-			display: none;
-		}
-		.eyebrow {
-			max-width: 100%;
-			white-space: normal;
-		}
-		.dl-meta {
-			gap: 8px 10px;
-		}
-		.section-label {
-			margin-bottom: 22px;
-		}
-		.feat {
-			min-height: 0;
-			padding: 24px 20px 26px;
-		}
-			.whisper h2,
-			.planned-head h2,
-			.how-copy h2 {
-				font-size: 24px;
-			}
-		.step {
-			padding: 14px 14px;
-		}
-		.step-label code {
-			overflow-wrap: anywhere;
-			word-break: break-word;
-		}
-		.foot {
-			align-items: flex-start;
-			flex-direction: column;
-		}
-		.foot-links {
-			flex-wrap: wrap;
-			gap: 12px 18px;
-		}
-	}
-
-	@media (min-width: 720px) {
-		.page {
-			padding-bottom: 96px;
-		}
-		.caption-float {
-			position: absolute;
-			bottom: -22px;
-			left: 50%;
-			transform: translateX(-50%);
-			margin: 0;
-			padding: 12px 20px;
-			width: auto;
-			font-size: 15px;
-			white-space: nowrap;
-		}
-		.whisper-stats {
-			grid-template-columns: repeat(3, 1fr);
-		}
-		.step {
-			grid-template-columns: 32px 1fr auto;
-			gap: 16px;
-		}
-		.step-tag {
-			grid-column: auto;
-		}
-	}
-</style>
