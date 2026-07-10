@@ -40,10 +40,14 @@
 		<span>{current.toUpperCase()}</span>
 	</button>
 
-	<div class="ls-menu" class:open role="menu">
+	<div
+		class="ls-menu rounded-box border border-base-300 bg-base-200 text-base-content shadow-xl shadow-black/40"
+		class:open
+		role="menu"
+	>
 		{#each locales as locale (locale)}
 			<a
-				class="ls-item"
+				class="ls-item rounded-field hover:bg-base-300"
 				class:active={locale === current}
 				href={localizeHref(page.url.pathname, { locale })}
 				role="menuitem"
@@ -84,10 +88,6 @@
 		top: calc(100% + 8px);
 		right: 0;
 		min-width: 160px;
-		background: hsl(var(--popover));
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-popover);
 		padding: 6px;
 		opacity: 0;
 		transform: translateY(-4px);
@@ -105,26 +105,21 @@
 		align-items: center;
 		gap: 10px;
 		padding: 8px 10px;
-		border-radius: var(--radius-md);
 		font-size: 13px;
-		color: var(--c-fg);
 		cursor: pointer;
 		transition: background-color 150ms ease-out;
 	}
-	.ls-item:hover {
-		background: hsl(var(--accent));
-	}
 	.ls-item.active {
-		color: hsl(17 75% 72%);
+		color: var(--color-primary);
 	}
 	.ls-code {
 		font-family: var(--font-mono);
 		font-size: 11px;
-		color: var(--c-fg-muted);
+		color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
 		min-width: 22px;
 	}
 	.ls-item.active .ls-code {
-		color: hsl(17 75% 72%);
+		color: var(--color-primary);
 	}
 	.ls-name {
 		font-size: 13px;

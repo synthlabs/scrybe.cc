@@ -116,7 +116,7 @@
 		</div>
 	</nav>
 
-	<header class="relative isolate overflow-hidden border-b border-base-300">
+	<header class="relative z-10 isolate overflow-visible border-b border-base-300">
 		<div class="mx-auto grid max-w-352 gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
 			<div class="flex flex-col justify-center">
 				<div class="mb-5 flex flex-wrap gap-2">

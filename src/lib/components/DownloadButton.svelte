@@ -103,11 +103,15 @@
 		<ChevronDown size={16} />
 	</button>
 
-	<div class="dl-menu" class:open={menuOpen} role="menu">
+	<div
+		class="dl-menu rounded-box border border-base-300 bg-base-200 text-base-content shadow-xl shadow-black/40"
+		class:open={menuOpen}
+		role="menu"
+	>
 		{#each ORDER as key (key)}
 			{@const m = META[key]}
 			<a
-				class="dl-menu-item"
+				class="dl-menu-item rounded-field hover:bg-base-300"
 				href={assets[key]}
 				role="menuitem"
 				onclick={() => pick(key)}
@@ -120,7 +124,6 @@
 						width="18"
 						height="18"
 						fill="currentColor"
-						style="color: hsl(217.9 10.6% 64.9%);"
 						aria-hidden="true"
 					>
 						<path
@@ -220,10 +223,6 @@
 		right: 0;
 		width: min(320px, calc(100vw - 36px));
 		min-width: min(260px, calc(100vw - 36px));
-		background: hsl(var(--popover));
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-popover);
 		padding: 6px;
 		opacity: 0;
 		transform: translateY(-4px);
@@ -244,19 +243,14 @@
 		align-items: center;
 		gap: 12px;
 		padding: 10px 12px;
-		border-radius: var(--radius-md);
 		font-size: 14px;
-		color: var(--c-fg);
 		cursor: pointer;
 		transition: background-color 150ms ease-out;
-	}
-	.dl-menu-item:hover {
-		background: hsl(var(--accent));
 	}
 	.dl-menu-item :global(svg) {
 		width: 18px;
 		height: 18px;
-		color: var(--c-fg-muted);
+		color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
 		flex-shrink: 0;
 	}
 	.mi-label {
@@ -265,7 +259,7 @@
 	}
 	.mi-sub {
 		font-size: 11px;
-		color: var(--c-fg-muted);
+		color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
 		line-height: 1.2;
 		margin-top: 2px;
 		font-family: var(--font-mono);
