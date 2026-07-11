@@ -1,30 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import {
-		AudioLines,
-		Captions,
-		Check,
-		Code,
-		Cpu,
-		FileText,
-		HardDriveDownload,
-		LockKeyhole,
-		Mic,
-		MonitorPlay,
-		Palette,
-		Projector,
-		RadioTower,
-		Rocket,
-		Settings2,
-		ShieldCheck,
-		SlidersHorizontal,
-		Sparkles
-	} from '@lucide/svelte';
+	import { Code, LockKeyhole, ShieldCheck } from '@lucide/svelte';
 	import DownloadButton from '$lib/components/DownloadButton.svelte';
 	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
+	import CaptionDisplay from '$lib/components/home/CaptionDisplay.svelte';
+	import FeatureShowcase from '$lib/components/home/FeatureShowcase.svelte';
 	import { fetchLatestRelease } from '$lib/releases';
 	import { m as msgs } from '$lib/paraglide/messages';
 	import type { PageData } from './$types';
+
+	type TranscriptLine = { timestamp: string; text: string };
 
 	let { data }: { data: PageData } = $props();
 
@@ -32,10 +17,53 @@
 	let version = $state(data.version);
 	// svelte-ignore state_referenced_locally
 	let assets = $state(data.assets);
-	// svelte-ignore state_referenced_locally
-	let filenames = $state(data.filenames);
 
-	const shortVersion = $derived(version.replace(/^v/, '').split('.').slice(0, 2).join('.'));
+	let reducedMotion = $state(false);
+	let phraseIndex = $state(0);
+	let wordIndex = $state(3);
+	let holdTicks = $state(0);
+	let transcriptIndex = $state(4);
+
+	const phrases = $derived([
+		msgs.hero_caption_float(),
+		msgs.hero_caption_phrase_2(),
+		msgs.hero_caption_phrase_3()
+	]);
+	const transcriptPool = $derived([
+		msgs.demo_transcript_1(),
+		msgs.demo_transcript_2(),
+		msgs.demo_transcript_3(),
+		msgs.demo_transcript_4(),
+		msgs.demo_transcript_5(),
+		msgs.demo_transcript_6()
+	]);
+
+	const captionText = $derived.by(() => {
+		if (reducedMotion) return phrases[0];
+		return phrases[phraseIndex].split(' ').slice(0, wordIndex).join(' ');
+	});
+
+	const transcriptLines = $derived.by((): TranscriptLine[] => {
+		const end = reducedMotion ? 3 : transcriptIndex;
+		const lines: TranscriptLine[] = [];
+		for (let index = Math.max(0, end - 3); index <= end; index += 1) {
+			const seconds = index * 2.6;
+			const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+			const remainder = (seconds % 60).toFixed(1).padStart(4, '0');
+			lines.push({
+				timestamp: `[${minutes}:${remainder}]`,
+				text: transcriptPool[index % transcriptPool.length]
+			});
+		}
+		return lines;
+	});
+
+	const setupSteps = [
+		{ title: msgs.how_step_1_title, body: msgs.how_step_1_body },
+		{ title: msgs.how_step_2_title, body: msgs.how_step_2_body },
+		{ title: msgs.how_step_3_title, body: msgs.how_step_3_body },
+		{ title: msgs.how_step_4_title, body: msgs.how_step_4_body }
+	];
 
 	onMount(async () => {
 		try {
@@ -43,11 +71,68 @@
 			if (fresh.version !== version) {
 				version = fresh.version;
 				assets = fresh.assets;
-				filenames = fresh.filenames;
 			}
 		} catch {
-			/* silent - keep build-time data */
+			// Keep build-time release data when GitHub is unavailable.
 		}
+	});
+
+	onMount(() => {
+		const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+		let timer: ReturnType<typeof setInterval> | undefined;
+		let accumulator = 0;
+		let wordTicks = 0;
+
+		function stopTimer() {
+			if (timer) clearInterval(timer);
+			timer = undefined;
+		}
+
+		function startTimer() {
+			if (timer || media.matches) return;
+			timer = setInterval(() => {
+				accumulator += 60;
+				if (accumulator < 170) return;
+				accumulator = 0;
+				wordTicks += 1;
+				if (wordTicks % 9 === 0) transcriptIndex += 1;
+
+				const words = phrases[phraseIndex].split(' ');
+				if (wordIndex < words.length) {
+					wordIndex += 1;
+					holdTicks = 0;
+					return;
+				}
+				if (holdTicks < 11) {
+					holdTicks += 1;
+					return;
+				}
+
+				phraseIndex = (phraseIndex + 1) % phrases.length;
+				wordIndex = 0;
+				holdTicks = 0;
+			}, 60);
+		}
+
+		function applyMotionPreference() {
+			reducedMotion = media.matches;
+			if (media.matches) {
+				stopTimer();
+				return;
+			}
+			phraseIndex = 0;
+			wordIndex = 3;
+			holdTicks = 0;
+			transcriptIndex = 4;
+			startTimer();
+		}
+
+		applyMotionPreference();
+		media.addEventListener('change', applyMotionPreference);
+		return () => {
+			stopTimer();
+			media.removeEventListener('change', applyMotionPreference);
+		};
 	});
 </script>
 
@@ -59,382 +144,153 @@
 	<link rel="alternate" hreflang="x-default" href="https://scrybe.cc/" />
 </svelte:head>
 
-<div class="min-h-screen bg-base-100 text-base-content" data-theme="scrybe">
-	<nav class="sticky top-0 z-40 border-b border-base-300/80 bg-base-100/92 backdrop-blur-xl">
-		<div class="navbar mx-auto min-h-16 max-w-352 px-4 sm:px-6 lg:px-8">
-			<div class="navbar-start min-w-0">
-				<a href="/" class="inline-flex min-w-0 items-center gap-3 font-semibold">
-					<img class="size-10 rounded-box" src="/scrybe-logo.png" alt="" />
-					<span class="text-base uppercase tracking-normal">scrybe</span>
-				</a>
+<div class="min-h-screen bg-base-100 text-sm text-base-content" data-theme="scrybe">
+	<nav class="sticky top-0 z-50 overflow-visible border-b border-base-300 bg-base-100/95 backdrop-blur-xl">
+		<div class="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-12">
+			<a href="/" class="inline-flex min-w-0 items-center gap-3 no-underline">
+				<img class="size-[34px] rounded-lg" src="/scrybe-logo.png" alt="" />
+				<span class="text-[15px] font-semibold uppercase tracking-[0.08em]">scrybe</span>
+			</a>
+
+			<div class="ml-auto hidden items-center gap-1.5 text-[13px] text-base-content/72 lg:flex">
+				<a class="rounded-field px-2.5 py-1.5 hover:underline hover:underline-offset-4" href="#features">{msgs.nav_features()}</a>
+				<a class="rounded-field px-2.5 py-1.5 hover:underline hover:underline-offset-4" href="#setup">{msgs.nav_setup()}</a>
+				<a class="rounded-field px-2.5 py-1.5 hover:underline hover:underline-offset-4" href="#whisper">{msgs.nav_technical()}</a>
 			</div>
 
-			<div class="navbar-center hidden lg:flex">
-				<div class="join">
-					<a class="btn btn-ghost btn-sm join-item" href="#features">{msgs.workflow_section_label()}</a>
-					<a class="btn btn-ghost btn-sm join-item" href="#how">{msgs.how_section_label()}</a>
-					<a class="btn btn-ghost btn-sm join-item" href="#planned">{msgs.planned_section_label()}</a>
-					<a class="btn btn-ghost btn-sm join-item" href="#whisper">{msgs.tech_section_label()}</a>
-				</div>
-			</div>
-
-			<div class="navbar-end gap-2">
+			<div class="ml-auto flex items-center gap-2 lg:ml-0">
 				<a
 					href="https://github.com/synthlabs/scrybe"
-					class="btn btn-ghost btn-sm hidden sm:inline-flex"
+					class="inline-flex h-8 items-center gap-2 rounded-field border border-base-300 px-2.5 text-[13px] text-base-content transition-colors duration-200 ease-out hover:bg-base-200 hover:no-underline"
 					target="_blank"
 					rel="noopener"
+					aria-label={msgs.nav_github()}
 				>
-					<svg
-						viewBox="0 0 24 24"
-						width="16"
-						height="16"
-						fill="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 3 .1 3.3.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"
-						/>
+					<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+						<path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 3 .1 3.3.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3" />
 					</svg>
-					<span>{msgs.nav_github()}</span>
+					<span class="hidden sm:inline">{msgs.nav_github()}</span>
 				</a>
 				<LanguageSwitcher />
 			</div>
 		</div>
-
-		<div class="mx-auto flex max-w-352 gap-2 overflow-x-auto px-4 pb-3 sm:px-6 lg:hidden">
-			<a class="btn btn-ghost btn-xs shrink-0" href="#features">{msgs.workflow_section_label()}</a>
-			<a class="btn btn-ghost btn-xs shrink-0" href="#how">{msgs.how_section_label()}</a>
-			<a class="btn btn-ghost btn-xs shrink-0" href="#planned">{msgs.planned_section_label()}</a>
-			<a class="btn btn-ghost btn-xs shrink-0" href="#whisper">{msgs.tech_section_label()}</a>
-			<a
-				class="btn btn-ghost btn-xs shrink-0 sm:hidden"
-				href="https://github.com/synthlabs/scrybe"
-				target="_blank"
-				rel="noopener">{msgs.nav_github()}</a
-			>
-		</div>
 	</nav>
 
-	<header class="relative z-10 isolate overflow-visible border-b border-base-300">
-		<div class="mx-auto grid max-w-352 gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
-			<div class="flex flex-col justify-center">
-				<div class="mb-5 flex flex-wrap gap-2">
-					<span class="badge badge-primary badge-outline gap-2 py-3 font-mono text-[11px] uppercase">
-						<span class="status status-success"></span>
-						v{shortVersion} · {msgs.hero_status()}
-					</span>
-				</div>
-
-				<h1 class="max-w-3xl text-4xl font-semibold leading-tight tracking-normal text-balance sm:text-5xl lg:text-6xl">
-					{msgs.hero_headline()}
-				</h1>
-
-				<p class="mt-6 max-w-2xl text-base leading-7 text-base-content/72 sm:text-lg">
-					{msgs.hero_subtitle()}
-					<span class="text-base-content/52">{msgs.hero_subtitle_caution()}</span>
-				</p>
-
-				<div class="mt-8">
-					<DownloadButton {assets} {filenames} />
-					<div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-base-content/52">
-						<span>{version}</span>
-						<span aria-hidden="true">/</span>
-						<span>AGPL-3.0</span>
-						<span aria-hidden="true">/</span>
-						<a
-							class="link-hover link"
-							href="https://github.com/synthlabs/scrybe/releases"
-							target="_blank"
-							rel="noopener">{msgs.hero_meta_all_releases()}</a
-						>
-					</div>
-				</div>
-
+	<header class="relative isolate min-h-[760px] overflow-hidden border-b border-base-300 bg-[#0b0d11] sm:min-h-[690px] lg:h-[600px] lg:min-h-0">
+		<div class="absolute inset-y-5 left-1/2 w-[calc(100%-2.5rem)] max-w-6xl -translate-x-1/2 rounded-[10px] border border-base-300/60">
+			<span class="absolute left-2 top-3 font-mono text-[10px] uppercase tracking-[0.08em] text-base-content/30 sm:left-5 sm:top-4">{msgs.stream_label()}</span>
+			<span class="absolute right-2 top-3 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-error sm:right-5 sm:top-3.5">
+				<span class="size-[7px] rounded-full bg-error"></span>{msgs.stream_live()}
+			</span>
+			<div class="absolute bottom-5 left-5 hidden h-22 w-37.5 items-center justify-center rounded-field border border-base-300 bg-base-200/60 sm:flex">
+				<span class="font-mono text-[10px] text-base-content/32">{msgs.stream_camera()}</span>
 			</div>
 
-			<div class="flex items-center">
-				<div class="relative w-full">
-					<div class="absolute -inset-3 rounded-box border border-primary/10 bg-base-200/50 blur-xl"></div>
-					<figure class="relative overflow-hidden rounded-box border border-base-300 bg-base-200 shadow-2xl shadow-black/30">
-						<img
-							src="/scrybe_0j1h8WKu9n.png"
-							alt="Scrybe overlay editor showing caption placement and OBS browser source settings"
-							class="block w-full"
-						/>
-					</figure>
-					<div class="mx-auto mt-3 w-fit max-w-full rounded-box border border-white/10 bg-black/76 px-4 py-3 text-center text-sm font-medium text-white shadow-xl sm:absolute sm:bottom-5 sm:left-1/2 sm:mt-0 sm:-translate-x-1/2 sm:whitespace-nowrap">
-						{msgs.hero_caption_float()}<span class="ml-1 inline-block h-4 w-px translate-y-0.5 animate-pulse bg-white"></span>
-					</div>
+			<div class="relative mx-auto flex max-w-190 flex-col items-center px-4 pb-40 pt-16 text-center sm:px-6 lg:px-12">
+				<div class="inline-flex items-center gap-2 rounded-full border border-primary/45 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.04em] text-primary">
+					<span class="size-[7px] rounded-full bg-primary"></span>{msgs.hero_status()}
 				</div>
+				<h1 class="mt-5.5 text-balance text-4xl font-semibold leading-[1.06] tracking-[-0.01em] sm:text-[46px] lg:text-[54px]">
+					{msgs.hero_headline()}
+				</h1>
+				<p class="mt-5 max-w-155 text-pretty text-[15px] leading-[1.6] text-base-content/72 sm:text-base">{msgs.hero_subtitle()}</p>
+				<p class="mt-2.5 max-w-155 text-pretty text-[13px] leading-[1.5] text-base-content/50">{msgs.hero_subtitle_caution()}</p>
+
+				<div class="mt-6.5 flex w-full max-w-sm flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
+					<DownloadButton {assets} />
+					<a class="inline-flex h-11 items-center justify-center rounded-field border border-base-300 px-4 text-sm text-base-content/85 transition-colors duration-200 ease-out hover:bg-base-200 hover:no-underline" href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener">
+						{msgs.hero_meta_all_releases()}
+					</a>
+				</div>
+
+				<div class="mt-3.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-base-content/52">
+					<span>{version}</span><span aria-hidden="true">/</span><span>AGPL-3.0</span><span aria-hidden="true">/</span><span>macOS · Windows · Linux</span><span aria-hidden="true">/</span>
+					<a class="hover:underline hover:underline-offset-4" href="https://github.com/synthlabs/scrybe" target="_blank" rel="noopener">{msgs.nav_github()}</a>
+				</div>
+			</div>
+
+			<div class="absolute inset-x-0 bottom-4 flex justify-center px-8 sm:bottom-6 sm:px-55">
+				<CaptionDisplay text={captionText} variant="hero" showCaret={!reducedMotion} />
 			</div>
 		</div>
 	</header>
 
 	<main>
-		<section class="border-b border-base-300 bg-base-200/35">
-			<div class="mx-auto grid max-w-352 gap-px overflow-hidden border-x border-base-300 bg-base-300 sm:grid-cols-3">
-				<div class="bg-base-100 p-6">
-					<div class="flex items-center gap-3">
-						<LockKeyhole size={20} class="text-accent" />
-						<h2 class="text-base font-semibold tracking-normal">{msgs.trust_free_title()}</h2>
-					</div>
-					<p class="mt-3 text-sm leading-6 text-base-content/62">{msgs.trust_free_body()}</p>
+		<section class="border-b border-base-300">
+			<div class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 md:grid-cols-3 md:gap-10 lg:px-12">
+                <div class="flex items-start gap-3.5">
+                    <Code size={18} strokeWidth={1.75} class="mt-0.5 shrink-0 text-accent" />
+                    <div><h2 class="text-sm font-semibold">{msgs.trust_creator_title()}</h2><p class="mt-0.5 text-xs leading-[1.55] text-base-content/58">{msgs.trust_creator_body()}</p></div>
+                </div>
+				<div class="flex items-start gap-3.5">
+					<LockKeyhole size={18} strokeWidth={1.75} class="mt-0.5 shrink-0 text-accent" />
+					<div><h2 class="text-sm font-semibold">{msgs.trust_free_title()}</h2><p class="mt-0.5 text-xs leading-[1.55] text-base-content/58">{msgs.trust_free_body()}</p></div>
 				</div>
-				<div class="bg-base-100 p-6">
-					<div class="flex items-center gap-3">
-						<ShieldCheck size={20} class="text-primary" />
-						<h2 class="text-base font-semibold tracking-normal">{msgs.trust_privacy_title()}</h2>
-					</div>
-					<p class="mt-3 text-sm leading-6 text-base-content/62">{msgs.trust_privacy_body()}</p>
-				</div>
-				<div class="bg-base-100 p-6">
-					<div class="flex items-center gap-3">
-						<Code size={20} class="text-accent" />
-						<h2 class="text-base font-semibold tracking-normal">{msgs.trust_creator_title()}</h2>
-					</div>
-					<p class="mt-3 text-sm leading-6 text-base-content/62">{msgs.trust_creator_body()}</p>
+				<div class="flex items-start gap-3.5">
+					<ShieldCheck size={18} strokeWidth={1.75} class="mt-0.5 shrink-0 text-primary" />
+					<div><h2 class="text-sm font-semibold">{msgs.trust_privacy_title()}</h2><p class="mt-0.5 text-xs leading-[1.55] text-base-content/58">{msgs.trust_privacy_body()}</p></div>
 				</div>
 			</div>
 		</section>
 
-		<section id="features" class="mx-auto max-w-352 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-			<div class="mt-12 grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-				<div>
-					<span class="badge badge-accent badge-outline mb-4">{msgs.features_section_label()}</span>
-					<h2 class="text-2xl font-semibold tracking-normal sm:text-3xl">{msgs.features_heading()}</h2>
-					<p class="mt-4 text-sm leading-6 text-base-content/62">{msgs.features_body()}</p>
+		<section id="features" class="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-16 lg:px-12">
+			<FeatureShowcase {captionText} {transcriptLines} showCaret={!reducedMotion} />
+		</section>
+
+		<section id="setup" class="scroll-mt-16 border-y border-base-300 bg-base-200/35">
+			<div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-12">
+				<span class="inline-block rounded-full border border-secondary/40 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-secondary">{msgs.how_section_label()}</span>
+				<div class="mt-4 grid items-end gap-5 lg:grid-cols-2 lg:gap-8">
+					<h2 class="max-w-130 text-balance text-[28px] font-semibold leading-[1.15] tracking-[-0.01em] sm:text-[32px]">{msgs.how_heading()}</h2>
+					<p class="max-w-110 text-sm leading-[1.6] text-base-content/62 lg:justify-self-end">{msgs.how_body()}</p>
 				</div>
 
-				<div class="grid gap-4 sm:grid-cols-2">
-					<article class="card border border-base-300 bg-base-200/80">
-						<div class="card-body">
-							<Cpu size={22} class="text-primary" />
-							<h3 class="card-title text-base tracking-normal">{msgs.feat_local_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_local_body()}</p>
+				<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+					{#each setupSteps as step, index (index)}
+						<div class="border-t-2 border-primary pt-4">
+							<span class="font-mono text-[11px] text-primary">{String(index + 1).padStart(2, '0')}</span>
+							<h3 class="mt-2 text-sm font-semibold leading-[1.4]">{step.title()}</h3>
+							{#if index === 2}
+								<code class="mt-2 inline-block max-w-full overflow-x-auto rounded-field border border-base-300 bg-base-100 px-2 py-1 font-mono text-[11px] text-primary">localhost:3030/app/v1/overlay</code>
+							{:else}
+								<p class="mt-1.5 text-xs leading-[1.55] text-base-content/55">{step.body()}</p>
+							{/if}
 						</div>
-					</article>
-					<article class="card border border-base-300 bg-base-200/80">
-						<div class="card-body">
-							<AudioLines size={22} class="text-accent" />
-							<h3 class="card-title text-base tracking-normal">{msgs.feat_audio_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_audio_body()}</p>
-						</div>
-					</article>
-					<article class="card border border-base-300 bg-base-200/80">
-						<div class="card-body">
-							<Captions size={22} class="text-secondary" />
-							<h3 class="card-title text-base tracking-normal">{msgs.feat_style_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_style_body()}</p>
-						</div>
-					</article>
-					<article class="card border border-base-300 bg-base-200/80">
-						<div class="card-body">
-							<SlidersHorizontal size={22} class="text-accent" />
-							<h3 class="card-title text-base tracking-normal">{msgs.feat_settings_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.feat_settings_body()}</p>
-						</div>
-					</article>
+					{/each}
 				</div>
 			</div>
 		</section>
 
-		<section id="how" class="border-y border-base-300 bg-base-200/35">
-			<div class="mx-auto grid max-w-352 gap-10 px-4 py-16 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-				<ol class="steps steps-vertical gap-3">
-					<li class="step step-primary">
-						<span class="grid gap-1 text-left">
-							<span class="font-semibold">{msgs.how_step_1_title()}</span>
-							<span class="text-xs leading-5 text-base-content/58">{msgs.how_step_1_body()}</span>
-						</span>
-					</li>
-					<li class="step step-primary">
-						<span class="grid gap-1 text-left">
-							<span class="font-semibold">{msgs.how_step_2_title()}</span>
-							<span class="text-xs leading-5 text-base-content/58">{msgs.how_step_2_body()}</span>
-						</span>
-					</li>
-					<li class="step step-primary">
-						<span class="grid gap-1 text-left">
-							<span class="font-semibold">{msgs.how_step_3_title()}</span>
-							<code class="max-w-[18rem] overflow-hidden text-ellipsis rounded-field border border-base-300 bg-base-100 px-2 py-1 font-mono text-[11px] text-primary mt-2">
-								http://localhost:3030/app/v1/overlay
-							</code>
-						</span>
-					</li>
-					<li class="step step-primary">
-						<span class="grid gap-1 text-left">
-							<span class="font-semibold">{msgs.how_step_4_title()}</span>
-							<span class="text-xs leading-5 text-base-content/58">{msgs.how_step_4_body()}</span>
-						</span>
-					</li>
-				</ol>
-                <div class="mt-2">
-					<span class="badge badge-secondary badge-outline mb-4">{msgs.how_section_label()}</span>
-					<h2 class="text-3xl font-semibold tracking-normal text-balance sm:text-4xl">{msgs.how_heading()}</h2>
-					<p class="mt-4 text-base leading-7 text-base-content/68">{msgs.how_body()}</p>
+		<section id="whisper" class="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 lg:px-12">
+			<div class="overflow-hidden rounded-[10px] border border-base-300 lg:grid lg:grid-cols-[1.1fr_0.9fr]">
+				<div class="p-6 sm:p-7 lg:border-r lg:border-base-300">
+					<span class="inline-block rounded-full border border-accent/40 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-accent">{msgs.tech_section_label()}</span>
+					<h2 class="mt-3.5 text-[26px] font-semibold leading-[1.2]">{msgs.tech_heading()}</h2>
+					<p class="mt-2.5 text-sm leading-[1.6] text-base-content/68">{msgs.tech_body()}</p>
+					<p class="mt-2.5 text-xs leading-[1.6] text-base-content/50">
+						{msgs.tech_whisper_body()} {msgs.tech_whisper_link_prefix()}
+						<a class="text-base-content/72 hover:underline hover:underline-offset-4" href="https://github.com/ggml-org/whisper.cpp" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp</a>.
+					</p>
+				</div>
+				<div class="grid bg-base-200/40">
+					<div class="flex items-center justify-between gap-4 border-t border-base-300 px-6 py-5 lg:border-t-0 lg:px-7"><span class="text-xs text-base-content/50">{msgs.tech_stat_runtime_label()}</span><span class="text-xl font-semibold text-primary">{msgs.tech_stat_runtime_value()}</span></div>
+					<div class="flex items-center justify-between gap-4 border-t border-base-300 px-6 py-5 lg:px-7"><span class="max-w-60 text-xs text-base-content/50">{msgs.tech_stat_compute_label()}</span><span class="text-xl font-semibold text-secondary">{msgs.tech_stat_compute_value()}</span></div>
+					<div class="flex items-center justify-between gap-4 border-t border-base-300 px-6 py-5 lg:px-7"><span class="text-xs text-base-content/50">{msgs.tech_stat_cost_label()}</span><span class="text-xl font-semibold text-accent">{msgs.tech_stat_cost_value()}</span></div>
 				</div>
 			</div>
-		</section>
-
-		<section id="planned" class="mx-auto max-w-352 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-			<div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] xl:gap-16">
-				<div>
-					<span class="badge badge-accent badge-outline mb-4">{msgs.planned_section_label()}</span>
-					<h2 class="text-3xl font-semibold tracking-normal text-balance sm:text-4xl">
-						{msgs.planned_heading()}
-					</h2>
-					<p class="mt-4 text-base leading-7 text-base-content/68">{msgs.planned_body()}</p>
-				</div>
-
-				<div class="grid gap-4 sm:grid-cols-2">
-					<article class="card border border-base-300 bg-base-200">
-						<div class="card-body">
-							<div class="flex items-start justify-between gap-3">
-								<AudioLines size={22} class="text-primary" />
-								<span class="badge badge-ghost">{msgs.roadmap_badge_next()}</span>
-							</div>
-							<h3 class="card-title text-base tracking-normal">{msgs.planned_audio_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_audio_body()}</p>
-						</div>
-					</article>
-					<article class="card border border-base-300 bg-base-200">
-						<div class="card-body">
-							<div class="flex items-start justify-between gap-3">
-								<Captions size={22} class="text-secondary" />
-								<span class="badge badge-ghost">{msgs.roadmap_badge_next()}</span>
-							</div>
-							<h3 class="card-title text-base tracking-normal">{msgs.planned_transcripts_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_transcripts_body()}</p>
-						</div>
-					</article>
-					<article class="card border border-base-300 bg-base-200">
-						<div class="card-body">
-							<div class="flex items-start justify-between gap-3">
-								<Projector size={22} class="text-info" />
-								<span class="badge badge-ghost">{msgs.roadmap_badge_later()}</span>
-							</div>
-							<h3 class="card-title text-base tracking-normal">{msgs.planned_obs_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_obs_body()}</p>
-						</div>
-					</article>
-					<article class="card border border-base-300 bg-base-200">
-						<div class="card-body">
-							<div class="flex items-start justify-between gap-3">
-								<FileText size={22} class="text-accent" />
-								<span class="badge badge-ghost">{msgs.roadmap_badge_later()}</span>
-							</div>
-							<h3 class="card-title text-base tracking-normal">{msgs.planned_control_title()}</h3>
-							<p class="text-sm leading-6 text-base-content/62">{msgs.planned_control_body()}</p>
-						</div>
-					</article>
-				</div>
-			</div>
-		</section>
-
-		<section id="whisper" class="border-y border-base-300 bg-base-200/35">
-			<div class="mx-auto max-w-352 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-					<div>
-						<span class="badge badge-secondary badge-outline mb-4">{msgs.tech_section_label()}</span>
-						<h2 class="text-3xl font-semibold tracking-normal text-balance sm:text-4xl">{msgs.tech_heading()}</h2>
-						<p class="mt-4 text-base leading-7 text-base-content/68">{msgs.tech_body()}</p>
-
-						<div class="stats stats-vertical mt-8 w-full border border-base-300 bg-base-100 shadow-none sm:stats-horizontal">
-							<div class="stat">
-								<div class="stat-title">{msgs.tech_stat_runtime_label()}</div>
-								<div class="stat-value text-2xl text-primary">{msgs.tech_stat_runtime_value()}</div>
-							</div>
-							<div class="stat">
-								<div class="stat-title">{msgs.tech_stat_compute_label()}</div>
-								<div class="stat-value text-2xl text-secondary">{msgs.tech_stat_compute_value()}</div>
-							</div>
-							<div class="stat">
-								<div class="stat-title">{msgs.tech_stat_cost_label()}</div>
-								<div class="stat-value text-2xl text-accent">{msgs.tech_stat_cost_value()}</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="join join-vertical w-full">
-						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100" open>
-							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
-								<Cpu size={20} class="text-primary" />
-								{msgs.tech_whisper_title()}
-							</summary>
-							<div class="collapse-content text-sm leading-6 text-base-content/64">
-								<p>{msgs.tech_whisper_body()}</p>
-								<p class="mt-3">
-									{msgs.tech_whisper_link_prefix()}
-									<a
-										class="link-hover link"
-										href="https://github.com/ggml-org/whisper.cpp"
-										target="_blank"
-										rel="noopener">github.com/ggml-org/whisper.cpp</a
-									>.
-								</p>
-							</div>
-						</details>
-
-						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100">
-							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
-								<RadioTower size={20} class="text-info" />
-								{msgs.tech_overlay_title()}
-							</summary>
-							<div class="collapse-content text-sm leading-6 text-base-content/64">
-								<p>{msgs.tech_overlay_body()}</p>
-							</div>
-						</details>
-
-						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100">
-							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
-								<HardDriveDownload size={20} class="text-accent" />
-								{msgs.tech_platforms_title()}
-							</summary>
-							<div class="collapse-content text-sm leading-6 text-base-content/64">
-								<p>{msgs.tech_platforms_body()}</p>
-							</div>
-						</details>
-
-						<details class="collapse collapse-arrow join-item border border-base-300 bg-base-100">
-							<summary class="collapse-title flex items-center gap-3 text-base font-semibold">
-								<Settings2 size={20} class="text-secondary" />
-								{msgs.tech_project_title()}
-							</summary>
-							<div class="collapse-content text-sm leading-6 text-base-content/64">
-								<p>{msgs.tech_project_body()}</p>
-							</div>
-						</details>
-					</div>
-				</div>
-			</div>
+			<p class="mt-3.5 text-xs text-base-content/50">{msgs.tech_platforms_body()}</p>
 		</section>
 	</main>
 
-	<footer class="mx-auto flex max-w-352 flex-col gap-5 px-4 py-10 text-sm text-base-content/58 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-		<div>
-			{msgs.foot_built_by()}
-			<a
-				href="https://github.com/synthlabs"
-				target="_blank"
-				rel="noopener"
-				class="link-hover link">synthlabs</a
-			>. {msgs.foot_open_source_prefix()}
-			<a
-				href="https://github.com/synthlabs/scrybe"
-				target="_blank"
-				rel="noopener"
-				class="link-hover link">{msgs.foot_repository()}</a
-			>.
-		</div>
-		<div class="flex flex-wrap gap-4">
-			<a class="link-hover link" href="https://github.com/synthlabs/scrybe/issues" target="_blank" rel="noopener"
-				>{msgs.foot_issues()}</a
-			>
-			<a class="link-hover link" href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener"
-				>{msgs.foot_releases()}</a
-			>
-			<a class="link-hover link" href="https://github.com/synthlabs/pepo" target="_blank" rel="noopener">Pepo</a>
+	<footer class="border-t border-base-300">
+		<div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-7 text-[13px] text-base-content/58 sm:flex-row sm:items-center sm:px-6 lg:px-12">
+			<div>{msgs.foot_attribution()}</div>
+			<div class="flex flex-wrap gap-x-5 gap-y-2 sm:ml-auto">
+				<a class="hover:underline hover:underline-offset-4" href="https://github.com/synthlabs/scrybe" target="_blank" rel="noopener">{msgs.nav_github()}</a>
+				<a class="hover:underline hover:underline-offset-4" href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener">{msgs.foot_releases()}</a>
+				<a class="hover:underline hover:underline-offset-4" href="https://github.com/synthlabs/scrybe/issues" target="_blank" rel="noopener">{msgs.foot_issues()}</a>
+				<a class="hover:underline hover:underline-offset-4" href="https://github.com/synthlabs" target="_blank" rel="noopener">{msgs.foot_synth_labs()}</a>
+			</div>
 		</div>
 	</footer>
 </div>

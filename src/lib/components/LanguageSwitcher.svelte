@@ -64,24 +64,33 @@
 	.ls {
 		position: relative;
 		display: inline-flex;
+		overflow: visible;
 	}
 	.ls-button {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
 		font-size: 13px;
-		color: var(--c-fg-muted);
+		color: color-mix(in oklab, var(--color-base-content) 72%, transparent);
 		background: transparent;
-		border: 1px solid var(--c-border);
-		border-radius: var(--radius-full);
-		padding: 5px 10px 5px 9px;
+		border: 1px solid var(--color-base-300);
+		border-radius: var(--radius-field);
+		padding: 6px 10px 6px 9px;
 		cursor: pointer;
 		font-family: inherit;
-		transition: color 150ms ease, border-color 150ms ease;
+		transition:
+			color 200ms ease-out,
+			border-color 200ms ease-out,
+			background-color 200ms ease-out;
 	}
 	.ls-button:hover {
-		color: var(--c-fg);
-		border-color: hsl(215 28% 30%);
+		color: var(--color-base-content);
+		border-color: color-mix(in oklab, var(--color-base-content) 30%, var(--color-base-300));
+		background: var(--color-base-200);
+	}
+	.ls-button:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
 	}
 	.ls-menu {
 		position: absolute;
@@ -92,7 +101,7 @@
 		opacity: 0;
 		transform: translateY(-4px);
 		pointer-events: none;
-		transition: opacity 180ms ease-out, transform 180ms ease-out;
+		transition: opacity 200ms ease-out, transform 200ms ease-out;
 		z-index: 20;
 	}
 	.ls-menu.open {
