@@ -28,7 +28,7 @@
 		height: 20px;
 		align-items: flex-end;
 		gap: 3px;
-		color: var(--color-primary);
+		color: var(--scrybe-color-success);
 	}
 
 	.meter.compact {
@@ -41,7 +41,7 @@
 		transform: scaleY(0.35);
 		transform-origin: 50% 100%;
 		border-radius: 2px;
-		background: var(--color-base-300);
+		background: var(--scrybe-color-idle);
 	}
 
 	.bar.active {

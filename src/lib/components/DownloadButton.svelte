@@ -38,41 +38,12 @@
 	});
 </script>
 
-<a class="download" href={currentHref}>
-	<Download size={16} strokeWidth={2} />
+<a class="web-button primary download" href={currentHref}>
+	<Download size={16} strokeWidth={1.75} aria-hidden="true" />
 	<span>{msgs.download_for()} {currentLabel}</span>
 </a>
 
 <style>
-	.download {
-		display: inline-flex;
-		height: 44px;
-		align-items: center;
-		justify-content: center;
-		gap: 10px;
-		border-radius: var(--radius-field);
-		background: var(--color-primary);
-		color: var(--color-primary-content);
-		padding: 0 20px;
-		font-size: 14px;
-		font-weight: 600;
-		line-height: 1;
-		transition: filter 200ms ease-out;
-	}
-
-	.download:hover {
-		filter: brightness(1.06);
-		text-decoration: none;
-	}
-
-	.download:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-
-	@media (max-width: 639px) {
-		.download {
-			width: 100%;
-		}
-	}
+  .download { min-width: min(12rem, 100%); }
+  .download span { min-width: 0; overflow-wrap: anywhere; }
 </style>
