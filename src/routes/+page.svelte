@@ -179,13 +179,11 @@
       <div class="hero-stage panel-frame">
         <div class="stream-meta metadata">
           <span>{msgs.stream_label()}</span>
-          <span class="activity-label"><span class="status-dot"></span>{msgs.stream_live()}</span>
+          <span class="activity-label"><span class="status-dot scrybe"></span>{msgs.hero_status()}</span>
         </div>
         <div class="hero-copy">
-          <span class="activity-label"><span class="status-dot idle"></span>{msgs.hero_status()}</span>
           <h1>{msgs.hero_headline()}</h1>
           <p class="hero-description secondary">{msgs.hero_subtitle()}</p>
-          <p class="metadata caution">{msgs.hero_subtitle_caution()}</p>
           <div class="hero-actions">
             <DownloadButton {assets} />
             <a class="web-button" href="https://github.com/synthlabs/scrybe/releases" target="_blank" rel="noopener">{msgs.hero_meta_all_releases()}</a>
@@ -281,6 +279,7 @@
   .hero-copy { max-width: 43rem; margin-inline: auto; padding: 1.5rem 0 2.5rem; text-align: center; }
   h1 { margin-top: 1.25rem; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.025em; line-height: 1.08; text-wrap: balance; }
   .hero-description { margin: 1.5rem auto 0; max-width: 38rem; text-wrap: pretty; }
+  .hero-status { color: var(--scrybe-color-brand);}
   .caution { margin-top: 0.75rem; }
   .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
   .release-meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; justify-content: center; margin-top: 1rem; }
